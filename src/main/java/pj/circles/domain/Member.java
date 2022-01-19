@@ -16,15 +16,15 @@ public class Member {//관리자
     @Id
     @GeneratedValue
     @Column(name = "member_id")
-    public Long id;
+    private Long id;
 
-    public String nickName;
-    public String passWord;
-    public String email;
+    private String nickName;
+    private String passWord;
+    private String email;
 
     @OneToOne
     @JoinColumn(name ="circle_id")
-    public Circle circle;
+    private Circle circle;
 
     public Member(String nickName, String passWord, String email){
         this.nickName=nickName;

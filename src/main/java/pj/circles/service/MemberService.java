@@ -16,7 +16,8 @@ public class MemberService {
     MemberRepository memberRepository;
 
     @Transactional
-    public Long join(Member member){
+    public Long join(String nickName, String passWord, String email){
+        Member member = new Member(nickName, passWord, email);
         memberRepository.save(member);
         return member.getId();
     }

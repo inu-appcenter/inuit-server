@@ -20,7 +20,10 @@ public class CircleService {
     CircleRepository circleRepository;
 
     @Transactional
-    public Long join(Circle circle){
+    public Long join(String name, String introduce, String information,
+                     CircleCategory circleCategory, CircleDivision circleDivision){
+
+        Circle circle = new Circle(name,introduce,information,circleCategory,circleDivision);
         circleRepository.save(circle);
         return circle.getId();
     }
