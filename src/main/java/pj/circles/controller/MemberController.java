@@ -4,11 +4,11 @@ package pj.circles.controller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pj.circles.domain.Member;
 import pj.circles.service.MemberService;
+
+import javax.validation.Valid;
 
 import static pj.circles.dto.MemberDTO.*;
 
@@ -27,6 +27,25 @@ public class MemberController {
         Member member = memberService.findById(id);
         MemberOneDTO memberOneDTO = new MemberOneDTO(member);
         return new Result(memberOneDTO);
+    }
+
+    /**
+     *맴버등록
+     */
+    @PostMapping("/member")
+    public CreateMemberResponse saveMember(@RequestBody @Valid CreateMemberRequest request){
+        return new CreateMemberResponse(
+                memberService.join(request.getNickName(), request.getPassword(), request.getEmail()));
+    }
+    /**
+     *맴버삭제
+     */
+    @DeleteMapping("/member/{id}")
+    public DeleteMember deleteMember(
+            @PathVariable("id")Long id
+    ){
+        memberService.deleteMember(id);
+        return new DeleteMember(id);
     }
 
     @Data
