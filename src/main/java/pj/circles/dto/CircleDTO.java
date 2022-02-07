@@ -6,10 +6,6 @@ import lombok.Data;
 import pj.circles.domain.Circle;
 import pj.circles.domain.CircleCategory;
 import pj.circles.domain.CircleDivision;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 
@@ -19,14 +15,14 @@ public class CircleDTO {
     public static class CirclesDTO {
         private Long id;
         private String name;
-        private String introduce;
+        private String oneLineIntroduce;
         public Boolean recruit;
         public LocalDateTime recruitEndDate;
 
         public CirclesDTO(Circle circle) {
             id = circle.getId();
             name = circle.getName();
-            introduce = circle.getIntroduce();
+            oneLineIntroduce = circle.getOneLineIntroduce();
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
         }
@@ -66,10 +62,11 @@ public class CircleDTO {
     @Data
     public static class CreateCircleRequest {
         private String name;//동아리이름
+        private String oneLineIntroduce;//한줄소개
         private String introduce;//소개
-        private String information;//지원정보
         private CircleCategory circleCategory;//분류
         private CircleDivision circleDivision;//중앙동아리,가동아리,소모임
+        private Boolean recruit;//모집여부*
     }
     @Data
     @AllArgsConstructor

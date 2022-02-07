@@ -47,7 +47,7 @@ public class CircleController {
     /**
      * 카테고리조회
      */
-    @GetMapping("/circle/category/{category}")
+    @GetMapping("/circles/category/{category}")
     public Result circleCategory(
             @PathVariable("category") CircleCategory category
     ) {
@@ -60,7 +60,7 @@ public class CircleController {
     /**
      * 분류조회
      */
-    @GetMapping("/circle/division/{division}")
+    @GetMapping("/circles/division/{division}")
     public Result circleDivision(
             @PathVariable("division") CircleDivision division
     ) {
@@ -72,24 +72,25 @@ public class CircleController {
     /**
      * 카테고리분류조회
      */
-    @GetMapping("/circle/category/{category}/division/{division}")
+    @GetMapping("/circles/category/{category}/division/{division}")
     public Result circleCategoryAndDivision(
             @PathVariable("category") CircleCategory category,
-            @PathVariable("name") CircleDivision division
+            @PathVariable("division") CircleDivision division
     ) {
         List<Circle> circles = circleService.findByCircleCategoryAndCircleDivision(category,division);
         List<CirclesDTO> collect = circles.stream()
                 .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
         return new Result(collect);
     }
+
     /**
      * 등록
      */
     @PostMapping("/circle")
     public CreateCircleResponse saveCircle(@RequestBody @Valid CreateCircleRequest request){
         return new CreateCircleResponse(
-                circleService.join(request.getName(), request.getIntroduce(), request.getInformation(),
-                        request.getCircleCategory(),request.getCircleDivision()));
+                circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
+                        request.getCircleCategory(),request.getCircleDivision(),request.getRecruit()));
     }
     /**
      * 삭제

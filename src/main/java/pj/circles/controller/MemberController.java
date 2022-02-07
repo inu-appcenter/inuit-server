@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pj.circles.domain.Member;
+import pj.circles.repository.EmailRepository;
 import pj.circles.service.MemberService;
 
 import javax.validation.Valid;
+
+import java.time.LocalDateTime;
 
 import static pj.circles.dto.MemberDTO.*;
 
@@ -16,7 +19,7 @@ import static pj.circles.dto.MemberDTO.*;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-
+    private final EmailRepository emailRepository;
     /**
      * 맴버조회
      */
@@ -34,8 +37,17 @@ public class MemberController {
      */
     @PostMapping("/member")
     public CreateMemberResponse saveMember(@RequestBody @Valid CreateMemberRequest request){
-        return new CreateMemberResponse(
-                memberService.join(request.getNickName(), request.getPassword(), request.getEmail()));
+
+        if(emailRepository.findByEmail(request.getEmail()).isEmpty()){
+            return new CreateMemberResponse(-1L);
+        }
+        else {
+            if (emailRepository.findByEmail(request.getEmail()).get().isCheck() == true) {
+                return new CreateMemberResponse(
+                        memberService.join(request.getNickName(), request.getPassword(), request.getEmail()));
+            } else
+                return new CreateMemberResponse(-1L);
+        }
     }
     /**
      *맴버삭제
