@@ -51,6 +51,11 @@ public class EmailController {
     }
 
 
+    /**
+     *
+     *함수
+     */
+
     //이메일,인증번호로그/DB 저장
     private MimeMessage createMessage(String to)throws Exception{
         logger.info("보내는 대상 : "+ to);

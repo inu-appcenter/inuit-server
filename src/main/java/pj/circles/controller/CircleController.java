@@ -87,10 +87,22 @@ public class CircleController {
      * 등록
      */
     @PostMapping("/circle")
-    public CreateCircleResponse saveCircle(@RequestBody @Valid CreateCircleRequest request){
-        return new CreateCircleResponse(
+    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request){
+        return new ReturnCircleIdResponse(
                 circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
                         request.getCircleCategory(),request.getCircleDivision(),request.getRecruit()));
+    }
+    /**
+     * 수정
+     */
+    @PostMapping("/circle/{id}")
+    public ReturnCircleIdResponse updateCircle(
+            @PathVariable("id") Long id, @RequestBody @Valid UpdateCircleRequest request){
+        circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
+                request.getCircleDivision(), request.getRecruit(), request.getRecruitStartDate(), request.getRecruitEndDate(),
+                request.getLink(),request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
+        return new ReturnCircleIdResponse(id);
+
     }
     /**
      * 삭제

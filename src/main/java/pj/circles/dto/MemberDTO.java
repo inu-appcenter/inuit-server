@@ -27,11 +27,19 @@ public class MemberDTO {
     }
 
     @Data
-    public static class CreateMemberResponse{
+    public static class ReturnMemberIdResponse {
         private Long id;
 
-        public CreateMemberResponse(Long id) {
+        public ReturnMemberIdResponse(Long id) {
             this.id = id;
+        }
+    }
+    @Data
+    public static class UpdateMemberRequest {
+        private String password;
+
+        public UpdateMemberRequest(String password) {
+            this.password = password;
         }
     }
     @Data

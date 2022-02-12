@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {//관리자
 
@@ -31,5 +30,7 @@ public class Member {//관리자
         this.passWord=passWord;
         this.email=email;
     }
-
+    public void updatePassWord(String passWord){
+        this.passWord=passWord;
+    }
 }

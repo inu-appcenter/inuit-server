@@ -11,8 +11,6 @@ import pj.circles.service.MemberService;
 
 import javax.validation.Valid;
 
-import java.time.LocalDateTime;
-
 import static pj.circles.dto.MemberDTO.*;
 
 @RestController
@@ -20,6 +18,7 @@ import static pj.circles.dto.MemberDTO.*;
 public class MemberController {
     private final MemberService memberService;
     private final EmailRepository emailRepository;
+
     /**
      * 맴버조회
      */
@@ -33,29 +32,40 @@ public class MemberController {
     }
 
     /**
-     *맴버등록
+     * 맴버등록
      */
     @PostMapping("/member")
-    public CreateMemberResponse saveMember(@RequestBody @Valid CreateMemberRequest request){
+    public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request) {
 
-        if(emailRepository.findByEmail(request.getEmail()).isEmpty()){
-            return new CreateMemberResponse(-1L);
-        }
-        else {
+        if (emailRepository.findByEmail(request.getEmail()).isEmpty()) {
+            return new ReturnMemberIdResponse(-1L);
+        } else {
             if (emailRepository.findByEmail(request.getEmail()).get().isCheck() == true) {
-                return new CreateMemberResponse(
+                emailRepository.findByEmail(request.getEmail()).get().isJoined();
+                return new ReturnMemberIdResponse(
                         memberService.join(request.getNickName(), request.getPassword(), request.getEmail()));
             } else
-                return new CreateMemberResponse(-1L);
+                return new ReturnMemberIdResponse(-1L);
         }
     }
+
     /**
-     *맴버삭제
+     * 맴버업데이트(비밀번호변경)
+     */
+    @PatchMapping("/member/{id}")
+    public ReturnMemberIdResponse updateMember(
+            @PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request) {
+        memberService.findById(id).updatePassWord(request.getPassword());
+        return new ReturnMemberIdResponse(id);
+    }
+
+    /**
+     * 맴버삭제
      */
     @DeleteMapping("/member/{id}")
     public DeleteMember deleteMember(
-            @PathVariable("id")Long id
-    ){
+            @PathVariable("id") Long id
+    ) {
         memberService.deleteMember(id);
         return new DeleteMember(id);
     }

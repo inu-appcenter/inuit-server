@@ -35,7 +35,9 @@ public class Email {
     public void isChecked(){
         this.isCheck=true;
     }
-
+    public void isJoined(){
+        this.isJoin=true;
+    }
     public void setCode(String code){
         this.code=code;
     }

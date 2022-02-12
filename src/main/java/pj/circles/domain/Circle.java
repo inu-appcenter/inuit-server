@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Circle {
     @Id
@@ -20,6 +19,7 @@ public class Circle {
 
     private String name;//동아리이름*
     private String oneLineIntroduce;//한줄소개*
+    @Column(length = 1000)
     private String introduce;//소개*
     private String information;//지원정보
     @Enumerated(EnumType.STRING)
@@ -31,9 +31,9 @@ public class Circle {
     private LocalDateTime recruitEndDate;//마감기간
     private String link;//지원링크
 
-    //동호수
-    //동아리카페링크
-    //전화번호
+    private String address;//동호수
+    private String cafeLink;//동아리카페링크
+    private String phoneNumber;//전화번호
 
     //동아리로고
     //동아리모집포스터
@@ -46,10 +46,27 @@ public class Circle {
     public Circle(String name, String oneLineIntroduce, String introduce,
                   CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit) {
         this.name = name;
-        this.oneLineIntroduce=oneLineIntroduce;
+        this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
         this.circleCategory = circleCategory;
         this.circleDivision = circleDivision;
-        this.recruit=recruit;
+        this.recruit = recruit;
+    }
+
+    public void updateCircle(String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision,
+                             Boolean recruit, LocalDateTime recruitStartDate, LocalDateTime recruitEndDate,
+                             String link, String address, String cafeLink, String phoneNumber) {
+        this.oneLineIntroduce = oneLineIntroduce;
+        this.introduce = introduce;
+        this.information = information;
+        this.circleDivision = circleDivision;
+        this.recruit = recruit;
+        this.recruitStartDate = recruitStartDate;
+        this.recruitEndDate = recruitEndDate;
+        this.link = link;
+        this.address = address;
+        this.cafeLink = cafeLink;
+        this.phoneNumber = phoneNumber;
+
     }
 }

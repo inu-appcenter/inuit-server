@@ -53,11 +53,26 @@ public class CircleDTO {
         }
     }
     @Data
-    public static class CreateCircleResponse{
+    public static class ReturnCircleIdResponse{
         private Long id;
-        public CreateCircleResponse(Long id) {
+        public ReturnCircleIdResponse(Long id) {
             this.id = id;
         }
+    }
+    @Data
+    public static class UpdateCircleRequest{
+
+        private String oneLineIntroduce;//한줄소개*
+        private String introduce;//소개*
+        private String information;//지원정보
+        private CircleDivision circleDivision;//중앙동아리,가동아리,소모임*
+        private Boolean recruit;//모집여부*
+        private LocalDateTime recruitStartDate;//시작기간
+        private LocalDateTime recruitEndDate;//마감기간
+        private String link;//지원링크
+        private String address;//동호수
+        private String cafeLink;//동아리카페링크
+        private String phoneNumber;//전화번호
     }
     @Data
     public static class CreateCircleRequest {
