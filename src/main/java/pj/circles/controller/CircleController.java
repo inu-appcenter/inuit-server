@@ -95,7 +95,7 @@ public class CircleController {
     /**
      * 수정
      */
-    @PostMapping("/circle/{id}")
+    @PatchMapping("/circle/{id}")
     public ReturnCircleIdResponse updateCircle(
             @PathVariable("id") Long id, @RequestBody @Valid UpdateCircleRequest request){
         circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
