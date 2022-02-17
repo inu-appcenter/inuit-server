@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.Circle;
 import pj.circles.domain.CircleCategory;
 import pj.circles.domain.CircleDivision;
+import pj.circles.domain.Member;
 import pj.circles.repository.CircleRepository;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class CircleService {
 
     @Transactional
     public Long join(String name, String oneLineIntroduce, String introduce,
-                     CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit){
+                     CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakao, Member member){
 
-        Circle circle = new Circle(name,oneLineIntroduce,introduce,circleCategory,circleDivision,recruit);
+        Circle circle = new Circle(name,oneLineIntroduce,introduce,circleCategory,circleDivision,recruit,openKakao,member);
         circleRepository.save(circle);
         return circle.getId();
     }

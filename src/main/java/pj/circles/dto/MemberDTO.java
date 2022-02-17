@@ -43,6 +43,11 @@ public class MemberDTO {
         }
     }
     @Data
+    public static class LoginMemberRequest {
+        private String email;
+        private String password;
+    }
+    @Data
     public static class CreateMemberRequest {
         @NotEmpty
         private String nickName;

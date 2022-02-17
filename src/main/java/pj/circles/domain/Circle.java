@@ -33,24 +33,27 @@ public class Circle {
 
     private String address;//동호수
     private String cafeLink;//동아리카페링크
+    private String openKakaoLink;//카카오 오픈쳇링크
     private String phoneNumber;//전화번호
 
     //동아리로고
     //동아리모집포스터
 
     //수정기능
-
-    @OneToOne(mappedBy = "circle")
+    @OneToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     public Circle(String name, String oneLineIntroduce, String introduce,
-                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit) {
+                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit,String openKakaoLink,Member member) {
         this.name = name;
         this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
         this.circleCategory = circleCategory;
         this.circleDivision = circleDivision;
         this.recruit = recruit;
+        this.openKakaoLink=openKakaoLink;
+        this.member=member;
     }
 
     public void updateCircle(String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision,

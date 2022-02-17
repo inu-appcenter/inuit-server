@@ -13,4 +13,6 @@ public interface CircleRepository extends JpaRepository<Circle,Long> {
     List<Circle> findByCircleDivision(CircleDivision circleDivision);
     List<Circle> findByCircleCategoryAndCircleDivision(CircleCategory circleCategory,CircleDivision circleDivision);
 
+    //소게내용검색
+
 }

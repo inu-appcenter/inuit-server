@@ -46,7 +46,7 @@ public class EmailController {
             return new EmailResponseDto(code.getCode());
         }
         else{
-            return new EmailResponseDto("불일치");
+            return new EmailResponseDto("인증코드불일치");
         }
     }
 

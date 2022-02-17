@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pj.circles.domain.Circle;
 import pj.circles.domain.CircleCategory;
 import pj.circles.domain.CircleDivision;
+import pj.circles.domain.Member;
+import pj.circles.jwt.JwtTokenProvider;
 import pj.circles.service.CircleService;
+import pj.circles.service.MemberService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +24,8 @@ import static pj.circles.dto.CircleDTO.*;
 @RequiredArgsConstructor
 public class CircleController {
     private final CircleService circleService;
-
+    private final JwtTokenProvider jwtTokenProvider;
+    private final MemberService memberService;
     /**
      * 전체조회
      */
@@ -43,7 +48,6 @@ public class CircleController {
         CircleOneDTO circleOneDTO = new CircleOneDTO(circle);
         return new Result(circleOneDTO);
     }
-
     /**
      * 카테고리조회
      */
@@ -87,10 +91,13 @@ public class CircleController {
      * 등록
      */
     @PostMapping("/circle")
-    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request){
+    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2){
+
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         return new ReturnCircleIdResponse(
                 circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
-                        request.getCircleCategory(),request.getCircleDivision(),request.getRecruit()));
+                        request.getCircleCategory(),request.getCircleDivision(),request.getRecruit(),request.getOpenKakao()
+                ,memberService.findById(userPk)));
     }
     /**
      * 수정

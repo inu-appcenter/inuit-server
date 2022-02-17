@@ -6,6 +6,8 @@ import lombok.Data;
 import pj.circles.domain.Circle;
 import pj.circles.domain.CircleCategory;
 import pj.circles.domain.CircleDivision;
+
+import java.security.PublicKey;
 import java.time.LocalDateTime;
 
 
@@ -16,15 +18,16 @@ public class CircleDTO {
         private Long id;
         private String name;
         private String oneLineIntroduce;
-        public Boolean recruit;
-        public LocalDateTime recruitEndDate;
-
+        private Boolean recruit;
+        private LocalDateTime recruitEndDate;
+        private Long userId;
         public CirclesDTO(Circle circle) {
             id = circle.getId();
             name = circle.getName();
             oneLineIntroduce = circle.getOneLineIntroduce();
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
+            userId=circle.getMember().getId();
         }
     }
 
@@ -82,6 +85,7 @@ public class CircleDTO {
         private CircleCategory circleCategory;//분류
         private CircleDivision circleDivision;//중앙동아리,가동아리,소모임
         private Boolean recruit;//모집여부*
+        private String openKakao;
     }
     @Data
     @AllArgsConstructor
