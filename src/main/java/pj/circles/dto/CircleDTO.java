@@ -42,6 +42,10 @@ public class CircleDTO {
         private Boolean recruit;
         private LocalDateTime recruitStartDate;
         private LocalDateTime recruitEndDate;
+        private String address;
+        private String cafeLink;
+        private String openKakaoLink;
+        private String phoneNumber;
 
         public CircleOneDTO(Circle circle) {
             id = circle.getId();
@@ -53,6 +57,10 @@ public class CircleDTO {
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
             recruitStartDate = circle.getRecruitStartDate();
+            address=circle.getAddress();
+            cafeLink=circle.getCafeLink();
+            openKakaoLink=circle.getOpenKakaoLink();
+            phoneNumber=circle.getPhoneNumber();
         }
     }
     @Data

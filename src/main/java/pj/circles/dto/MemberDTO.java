@@ -38,9 +38,7 @@ public class MemberDTO {
     public static class UpdateMemberRequest {
         private String password;
 
-        public UpdateMemberRequest(String password) {
-            this.password = password;
-        }
+
     }
     @Data
     public static class LoginMemberRequest {

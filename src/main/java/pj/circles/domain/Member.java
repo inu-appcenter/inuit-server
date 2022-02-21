@@ -23,8 +23,6 @@ public class Member implements UserDetails {//관리자
     private String nickName;
     private String password;
     private String email;
-    //@ElementCollection(fetch = FetchType.EAGER)
-    //private List<String> roles = new ArrayList<>();
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
     @OneToOne(mappedBy = "member")

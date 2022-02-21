@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pj.circles.exceptions.CustomAccessDeniedHandler;
+import pj.circles.exceptions.CustomAuthenticationEntryPoint;
 import pj.circles.jwt.JwtAuthenticationFilter;
 import pj.circles.jwt.JwtTokenProvider;
 
@@ -34,6 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // csrf 보안 토큰 disable처리.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/email").permitAll()
                 .antMatchers("/verifyCode/**").permitAll()
@@ -44,7 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
         // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
+
     }
 
     @Bean

@@ -34,8 +34,14 @@ public class EmailController {
 
     @PostMapping("/email") // 이메일 인증 코드 보내기
     public EmailResponseDto emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
-        sendSimpleMessage(email.getEmail());
+        if(emailRepository.findByEmail(email.getEmail()).isEmpty()){
+            sendSimpleMessage(email.getEmail());
+        }
 
+        if(emailRepository.findByEmail(email.getEmail()).get().getJoined()==true) {
+            throw new IllegalArgumentException("이미 존제하는 이메일입니다.");
+        }
+        sendSimpleMessage(email.getEmail());
         return new EmailResponseDto(email.getEmail());
     }
 
@@ -46,7 +52,7 @@ public class EmailController {
             return new EmailResponseDto(code.getCode());
         }
         else{
-            return new EmailResponseDto("인증코드불일치");
+            throw new IllegalArgumentException("잘못된 인증번호입니다.");
         }
     }
 
@@ -113,7 +119,7 @@ public class EmailController {
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("없는 이메일주소입니다");
         }
     }
 

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class Circle {
 
     private String name;//동아리이름*
     private String oneLineIntroduce;//한줄소개*
-    @Column(length = 1000)
+    @Column(columnDefinition="TEXT")
     private String introduce;//소개*
     private String information;//지원정보
     @Enumerated(EnumType.STRING)

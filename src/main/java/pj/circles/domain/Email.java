@@ -38,6 +38,7 @@ public class Email {
     public void isJoined(){
         this.isJoin=true;
     }
+    public boolean getJoined(){return this.isJoin;}
     public void setCode(String code){
         this.code=code;
     }

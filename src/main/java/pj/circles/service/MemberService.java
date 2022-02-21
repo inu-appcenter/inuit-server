@@ -30,4 +30,11 @@ public class MemberService {
     public void deleteMember(Long memberId){
         memberRepository.delete(findById(memberId));
     }
+
+    @Transactional
+    public void updateMember(Long memberId,String password){
+        Member member = memberRepository.findById(memberId).get();
+        member.updatePassWord(password);
+
+    }
 }
