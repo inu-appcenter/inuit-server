@@ -12,7 +12,7 @@ public interface CircleRepository extends JpaRepository<Circle,Long> {
     List<Circle> findByCircleCategory(CircleCategory circleCategory);
     List<Circle> findByCircleDivision(CircleDivision circleDivision);
     List<Circle> findByCircleCategoryAndCircleDivision(CircleCategory circleCategory,CircleDivision circleDivision);
-    List<Circle> findByNameContainsOrIntroduceContains(String name,String introduce);
+    List<Circle> findByNameContainsOrIntroduceContainsOrOneLineIntroduceContains(String name, String introduce,String oneLineIntroduce);
 
 
 }

@@ -84,6 +84,7 @@ public class CircleDTO {
         private String address;//동호수
         private String cafeLink;//동아리카페링크
         private String phoneNumber;//전화번호
+
     }
     @Data
     public static class CreateCircleRequest {

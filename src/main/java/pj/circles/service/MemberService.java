@@ -32,9 +32,10 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMember(Long memberId,String password){
+    public void updateMember(Long memberId,String password,String nickName){
         Member member = memberRepository.findById(memberId).get();
         member.updatePassWord(password);
+        member.updateNickName(nickName);
 
     }
 }

@@ -39,8 +39,8 @@ public class CircleService {
     public List<Circle> findByCircleCategory(CircleCategory circleCategory){
         return circleRepository.findByCircleCategory(circleCategory);
     }
-    public List<Circle> findByNameOrIntroduce(String name,String introduce){
-        return circleRepository.findByNameContainsOrIntroduceContains(name,introduce);
+    public List<Circle> findByNameOrIntroduce(String name,String introduce,String oneLineIntroduce){
+        return circleRepository.findByNameContainsOrIntroduceContainsOrOneLineIntroduceContains(name,introduce,oneLineIntroduce);
     }
     public List<Circle> findByCircleDivision(CircleDivision circleDivision){
         return circleRepository.findByCircleDivision(circleDivision);

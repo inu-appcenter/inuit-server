@@ -7,6 +7,7 @@ import pj.circles.domain.Circle;
 import pj.circles.domain.Member;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Optional;
 
 public class MemberDTO {
 
@@ -21,8 +22,11 @@ public class MemberDTO {
             id= member.getId();;
             nickName= member.getNickName();
             email= member.getEmail();;
-            circleId=member.getCircle().getId();
-            circleName=member.getCircle().getName();
+            Optional<Circle> circle=Optional.ofNullable(member.getCircle());
+            if (!circle.isEmpty()) {
+                circleId = circle.get().getId();
+                circleName = circle.get().getName();
+            }
         }
     }
 
@@ -37,6 +41,7 @@ public class MemberDTO {
     @Data
     public static class UpdateMemberRequest {
         private String password;
+        private String nickName;
 
 
     }

@@ -41,7 +41,7 @@ public class Circle {
     //동아리모집포스터
 
     //수정기능
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 

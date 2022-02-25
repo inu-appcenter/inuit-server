@@ -39,7 +39,9 @@ public class Member implements UserDetails {//관리자
     public void updatePassWord(String passWord){
         this.password =passWord;
     }
-
+    public void updateNickName(String nickName){
+        this.nickName =nickName;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()

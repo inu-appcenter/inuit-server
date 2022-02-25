@@ -1,9 +1,9 @@
 spring: #띄어쓰기 없음
   datasource: #띄어쓰기 2칸
-    url: jdbc:h2:tcp://localhost/~/demo #4칸
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: ${dburl} #4칸
+    username: root
+    password: ${dbpassword}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa: #띄어쓰기 2칸
     hibernate: #띄어쓰기 4칸

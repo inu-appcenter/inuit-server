@@ -86,7 +86,7 @@ public class MemberController {
     @PatchMapping("/admin/member/{id}")
     public ReturnMemberIdResponse updateMemberRoot(
             @PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request) {
-        memberService.findById(id).updatePassWord(passwordEncoder.encode(request.getPassword()));
+        memberService.updateMember(id,passwordEncoder.encode(request.getPassword()), request.getNickName());
         return new ReturnMemberIdResponse(id);
     }
 
@@ -110,7 +110,7 @@ public class MemberController {
             HttpServletRequest request2, @RequestBody @Valid UpdateMemberRequest request) {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
 
-        memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()));
+        memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()), request.getNickName());
         return new ReturnMemberIdResponse(userPk);
     }
 

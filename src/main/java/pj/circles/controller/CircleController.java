@@ -93,7 +93,7 @@ public class CircleController {
     public Result circleNameOrIntroduce(
             @PathVariable("name") String name
     ) {
-        List<Circle> circles = circleService.findByNameOrIntroduce(name,name);
+        List<Circle> circles = circleService.findByNameOrIntroduce(name,name,name);
         List<CirclesDTO> collect = circles.stream()
                 .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
         return new Result(collect);
@@ -105,10 +105,14 @@ public class CircleController {
     @PostMapping("/circle")
     public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2){
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
-        return new ReturnCircleIdResponse(
-                circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
-                        request.getCircleCategory(),request.getCircleDivision(),request.getRecruit(),request.getOpenKakao()
-                ,memberService.findById(userPk)));
+        if(memberService.findById(userPk).getCircle()==null) {
+            return new ReturnCircleIdResponse(
+                    circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
+                            request.getCircleCategory(), request.getCircleDivision(), request.getRecruit(), request.getOpenKakao()
+                            , memberService.findById(userPk)));
+        }
+        else
+            throw new IllegalArgumentException("이미 등록한 동아리가 있습니다");
     }
     /**
      * 수정
