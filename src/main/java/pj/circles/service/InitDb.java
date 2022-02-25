@@ -2,6 +2,8 @@ package pj.circles.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pj.circles.domain.*;
@@ -12,6 +14,7 @@ import javax.transaction.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@PropertySource("classpath:login.properties")
 public class InitDb {
     private final InitService initService;
 
@@ -29,6 +32,10 @@ public class InitDb {
         private final EntityManager em;
         @Autowired
         private PasswordEncoder passwordEncoder;
+        @Value("${id}")
+        private String id;
+        @Value("${ps}")
+        private String ps;
         public void dbInit() {
             Member member = new Member("닉1","비번1","이메일1");
             //member.setId(999L);
@@ -59,7 +66,7 @@ public class InitDb {
             em.flush();
         }
         public void dbInit4() {
-            Member member = new Member("root",passwordEncoder.encode("root"),"root");
+            Member member = new Member(id,passwordEncoder.encode(ps),"root");
             member.getRoles().add("ROLE_ADMIN");
 
             em.persist(member);
