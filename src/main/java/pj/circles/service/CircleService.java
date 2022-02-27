@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pj.circles.domain.Circle;
-import pj.circles.domain.CircleCategory;
-import pj.circles.domain.CircleDivision;
-import pj.circles.domain.Member;
+import pj.circles.domain.*;
 import pj.circles.repository.CircleRepository;
 
 import java.util.List;
@@ -49,7 +46,6 @@ public class CircleService {
             CircleCategory circleCategory,CircleDivision circleDivision){
         return circleRepository.findByCircleCategoryAndCircleDivision(circleCategory,circleDivision);
     }
-
     @Transactional
     public void deleteCircle(Long circleId){
         circleRepository.delete(findById(circleId));

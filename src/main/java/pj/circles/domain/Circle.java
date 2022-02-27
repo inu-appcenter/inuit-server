@@ -3,11 +3,11 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +37,8 @@ public class Circle {
     private String openKakaoLink;//카카오 오픈쳇링크
     private String phoneNumber;//전화번호
 
+    @OneToMany(mappedBy = "circle")
+    private List<Photo> photos = new ArrayList<>();
     //동아리로고
     //동아리모집포스터
 

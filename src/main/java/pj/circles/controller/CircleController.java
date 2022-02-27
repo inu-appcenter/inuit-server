@@ -4,17 +4,31 @@ package pj.circles.controller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pj.circles.domain.Circle;
 import pj.circles.domain.CircleCategory;
 import pj.circles.domain.CircleDivision;
+import pj.circles.domain.Photo;
+import pj.circles.file.FileStore;
 import pj.circles.jwt.JwtTokenProvider;
+import pj.circles.repository.PhotoRepository;
 import pj.circles.service.CircleService;
 import pj.circles.service.MemberService;
+import pj.circles.service.PhotoService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +40,8 @@ public class CircleController {
     private final CircleService circleService;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
+    private final PhotoService photoService;
+    private final PhotoRepository photoRepository;
     /**
      * 전체조회
      */
@@ -164,6 +180,49 @@ public class CircleController {
                 request.getLink(),request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
         return new ReturnCircleIdResponse(id);
 
+    }
+    /**
+     * 사진등록
+     */
+    @PostMapping("/user/circle/{id}/photo")
+    public ResponseEntity upload(@PathVariable("id") Long id,@RequestPart MultipartFile file,HttpServletRequest request2) throws IOException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
+            Long pid = photoService.join(file, circleService.findById(id));
+            return new ResponseEntity(pid,HttpStatus.OK);
+        }
+        else
+            throw  new AccessDeniedException("403 return");
+    }
+    /**
+     * 사진조회
+     */
+    @GetMapping("/circles/view/photo/{id}")
+    public ResponseEntity<Resource> showImage(@PathVariable("id") Long id){
+        String imageRoot = photoService.findPhoto(id);
+        Resource resource = new FileSystemResource(imageRoot);
+        HttpHeaders headers = new HttpHeaders();
+        Path filePath = null;
+        try{
+            filePath = Paths.get(imageRoot);
+            headers.add("Content-Type", Files.probeContentType(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+    }
+    /**
+     * 사진삭제
+     */
+    @DeleteMapping("/user/circle/{circleId}/delete/photo/{photoId}")
+    public ResponseEntity unload(@PathVariable("circleId") Long circleId,@PathVariable("photoId") Long photoId,HttpServletRequest request2) throws IOException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {
+            photoService.deletePhoto(photoRepository.findById(photoId).get());
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+            throw  new AccessDeniedException("403 return");
     }
 
     @Data
