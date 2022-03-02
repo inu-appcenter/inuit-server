@@ -10,15 +10,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pj.circles.domain.Member;
 import pj.circles.dto.EmailRequest;
 import pj.circles.dto.EmailResponseDto;
 import pj.circles.dto.VerifyRequest;
+import pj.circles.jwt.JwtTokenProvider;
 import pj.circles.repository.EmailRepository;
+import pj.circles.repository.MemberRepository;
 import pj.circles.service.EmailService;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -28,6 +34,8 @@ public class EmailController {
     private final EmailService emailService;
     private final EmailRepository emailRepository;
     private final JavaMailSender emailSender;
+    private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -44,7 +52,32 @@ public class EmailController {
         sendSimpleMessage(email.getEmail());
         return new EmailResponseDto(email.getEmail());
     }
+    @PostMapping("/email/password") // 이메일 인증 코드 보내기
+    public EmailResponseDto findPassword(@RequestBody @Valid EmailRequest email) throws Exception {
 
+        if(emailRepository.findByEmail(email.getEmail()).get().getJoined()==true) {
+            sendSimpleMessage(email.getEmail());
+        }
+        else {
+            throw new IllegalArgumentException("가입하지않은 이메일입니다.");
+        }
+        return new EmailResponseDto(email.getEmail());
+    }
+    @PostMapping("/verifyCode/password/{email}") // 이메일 인증 코드 검증
+    public String verifyCodePassword(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
+        if(emailRepository.findByEmail(email).get().getCode().equals(code.getCode())) {
+            Member mem1 = memberRepository.findByEmail(email).get();
+            Iterator<String> iter =mem1.getRoles().iterator();
+            List<String> roles=new ArrayList<>();
+            while (iter.hasNext()) {
+                roles.add(iter.next());
+            }
+            return jwtTokenProvider.createToken(mem1.getUsername(), roles);
+        }
+        else{
+            throw new IllegalArgumentException("잘못된 인증번호입니다.");
+        }
+    }
     @PostMapping("/verifyCode/{email}") // 이메일 인증 코드 검증
     public EmailResponseDto verifyCode(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
         if(emailRepository.findByEmail(email).get().getCode().equals(code.getCode())) {

@@ -46,5 +46,11 @@ public class PhotoService {
         Photo photo = photoRepository.findById(id).get();
         return fileDir+photo.getStoreFileName();
     }
+    @Transactional
+    public void setMain(Long id){
+        Photo photo = photoRepository.findById(id).get();
+        photo.setMain();
+    }
+
 
 }

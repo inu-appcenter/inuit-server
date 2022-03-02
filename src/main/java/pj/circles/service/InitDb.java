@@ -11,6 +11,7 @@ import pj.circles.domain.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class InitDb {
             //member.setId(999L);
             em.persist(member);
             Circle circle = new Circle("모집중-문화-가동아리","첫줄소개",
-                    "소개", CircleCategory.문화, CircleDivision.가동아리,true,"http~",member);
+                    "소개", CircleCategory.문화, CircleDivision.가동아리,true,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
             em.flush();
         }
@@ -50,7 +51,7 @@ public class InitDb {
 
             em.persist(member);
             Circle circle = new Circle("모집안함-학술-중앙동아리","첫줄소개2",
-                    "소개", CircleCategory.학술, CircleDivision.중앙동아리,false,"http~",member);
+                    "소개", CircleCategory.학술, CircleDivision.중앙동아리,false,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
             em.flush();
         }
@@ -61,7 +62,7 @@ public class InitDb {
             em.persist(member);
             em.persist(email);
             Circle circle = new Circle("모집중-체육-소모임","첫줄소개3",
-                    "소개", CircleCategory.체육, CircleDivision.소모임,true,"x",member);
+                    "소개", CircleCategory.체육, CircleDivision.소모임,true,"x", LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
             em.flush();
         }

@@ -48,7 +48,8 @@ public class Circle {
     private Member member;
 
     public Circle(String name, String oneLineIntroduce, String introduce,
-                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit,String openKakaoLink,Member member) {
+                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit,String openKakaoLink,
+                  LocalDateTime recruitStartDate,LocalDateTime recruitEndDate,String link,String address,String cafeLink,String phoneNumber,String information,Member member) {
         this.name = name;
         this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
@@ -56,6 +57,13 @@ public class Circle {
         this.circleDivision = circleDivision;
         this.recruit = recruit;
         this.openKakaoLink=openKakaoLink;
+        this.recruitStartDate=recruitStartDate;
+        this.recruitEndDate=recruitEndDate;
+        this.link=link;
+        this.address=address;
+        this.cafeLink=cafeLink;
+        this.phoneNumber=phoneNumber;
+        this.information=information;
         this.member=member;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.*;
 import pj.circles.repository.CircleRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,9 +20,11 @@ public class CircleService {
 
     @Transactional
     public Long join(String name, String oneLineIntroduce, String introduce,
-                     CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakao, Member member){
+                     CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakao,
+                      LocalDateTime recruitStartDate, LocalDateTime recruitEndDate, String link, String address, String cafeLink, String phoneNumber,String information, Member member){
 
-        Circle circle = new Circle(name,oneLineIntroduce,introduce,circleCategory,circleDivision,recruit,openKakao,member);
+        Circle circle = new Circle(name,oneLineIntroduce,introduce,circleCategory,circleDivision,recruit,openKakao,
+                recruitStartDate,recruitEndDate,link,address,cafeLink,phoneNumber,information,member);
         circleRepository.save(circle);
         return circle.getId();
     }
@@ -50,4 +53,5 @@ public class CircleService {
     public void deleteCircle(Long circleId){
         circleRepository.delete(findById(circleId));
     }
+
 }

@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pj.circles.domain.Circle;
-import pj.circles.domain.CircleCategory;
-import pj.circles.domain.CircleDivision;
-import pj.circles.domain.Photo;
+import pj.circles.domain.*;
 import pj.circles.file.FileStore;
 import pj.circles.jwt.JwtTokenProvider;
 import pj.circles.repository.PhotoRepository;
@@ -29,7 +26,11 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pj.circles.dto.CircleDTO.*;
@@ -122,10 +123,21 @@ public class CircleController {
     public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2){
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(memberService.findById(userPk).getCircle()==null) {
+            LocalDateTime start = null;
+            LocalDateTime end = null;
+            if(request.getRecruitStartDate()==null) {
+
+            }
+            else {
+                start = LocalDateTime.parse(request.getRecruitStartDate().get());
+                end = LocalDateTime.parse(request.getRecruitEndDate().get());
+            }
+
             return new ReturnCircleIdResponse(
                     circleService.join(request.getName(), request.getOneLineIntroduce(), request.getIntroduce(),
                             request.getCircleCategory(), request.getCircleDivision(), request.getRecruit(), request.getOpenKakao()
-                            , memberService.findById(userPk)));
+                            ,start,end,request.getLink()
+                            ,request.getAddress(),request.getCafeLink(),request.getPhoneNumber(),request.getInformation(), memberService.findById(userPk)));
         }
         else
             throw new IllegalArgumentException("이미 등록한 동아리가 있습니다");
@@ -139,8 +151,17 @@ public class CircleController {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(idParam).getMember().equals(memberService.findById(userPk))) {
             Long id = memberService.findById(userPk).getCircle().getId();
+            LocalDateTime start = null;
+            LocalDateTime end = null;
+            if(request.getRecruitStartDate()==null) {
+
+            }
+            else {
+                start = LocalDateTime.parse(request.getRecruitStartDate().get());
+                end = LocalDateTime.parse(request.getRecruitEndDate().get());
+            }
             circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
-                    request.getCircleDivision(), request.getRecruit(), request.getRecruitStartDate(), request.getRecruitEndDate(),
+                    request.getCircleDivision(), request.getRecruit(),start,end,
                     request.getLink(), request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
             return new ReturnCircleIdResponse(id);
         }
@@ -154,6 +175,11 @@ public class CircleController {
     public DeleteCircle deleteCircle(@PathVariable("id")Long idParam,HttpServletRequest request2) throws AccessDeniedException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(idParam).getMember().equals(memberService.findById(userPk))) {
+            List<Photo> photos = memberService.findById(userPk).getCircle().getPhotos();
+            List<Long> ids = photos.stream().map(o->o.getId()).collect(Collectors.toList());
+            for(Long did:ids){
+                photoService.deletePhoto(photoRepository.findById(did).get());
+            }
             Long id = memberService.findById(userPk).getCircle().getId();
             circleService.deleteCircle(id);
             return new DeleteCircle(id);
@@ -175,21 +201,69 @@ public class CircleController {
     @PatchMapping("/admin/circle/{id}")
     public ReturnCircleIdResponse updateCircleRoot(
             @PathVariable("id") Long id, @RequestBody @Valid UpdateCircleRequest request){
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        if(request.getRecruitStartDate()==null) {
+
+        }
+        else {
+            start = LocalDateTime.parse(request.getRecruitStartDate().get());
+            end = LocalDateTime.parse(request.getRecruitEndDate().get());
+        }
         circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
-                request.getCircleDivision(), request.getRecruit(), request.getRecruitStartDate(), request.getRecruitEndDate(),
+                request.getCircleDivision(), request.getRecruit(), start, end,
                 request.getLink(),request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
         return new ReturnCircleIdResponse(id);
 
     }
     /**
      * 사진등록
-     */
+
     @PostMapping("/user/circle/{id}/photo")
     public ResponseEntity upload(@PathVariable("id") Long id,@RequestPart MultipartFile file,HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
             Long pid = photoService.join(file, circleService.findById(id));
             return new ResponseEntity(pid,HttpStatus.OK);
+        }
+        else
+            throw  new AccessDeniedException("403 return");
+    }
+     */
+    /**
+     * 사진등록
+     */
+    @PostMapping("/user/circle/{id}/photos")
+    public ResponseEntity upload2(@PathVariable("id") Long id,@RequestPart List<MultipartFile> files,HttpServletRequest request2) throws IOException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        List<Long> list = new ArrayList<>();
+        if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
+            for (MultipartFile file : files){
+                list.add(photoService.join(file, circleService.findById(id)));
+            }
+
+            return new ResponseEntity(list,HttpStatus.OK);
+        }
+        else
+            throw  new AccessDeniedException("403 return");
+    }
+    /**
+     * 메인사진설정
+     */
+    @PostMapping("/user/circle/{circleId}/photo/{photoId}")
+    public ResponseEntity mainload(@PathVariable("circleId") Long id,@PathVariable("photoId") Long photoId,HttpServletRequest request2) throws IOException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
+            Optional<Photo> photo1 = circleService.findById(id).getPhotos().stream()
+                    .filter(photo -> photo.getPhotoType().equals(PhotoType.메인))
+                    .findFirst();
+            if(photo1.isEmpty()){
+            }
+            else{
+                photo1.get().setSub();
+            }
+            photoService.setMain(photoId);
+            return new ResponseEntity(photoId,HttpStatus.OK);
         }
         else
             throw  new AccessDeniedException("403 return");
@@ -213,12 +287,28 @@ public class CircleController {
     }
     /**
      * 사진삭제
-     */
+
     @DeleteMapping("/user/circle/{circleId}/delete/photo/{photoId}")
     public ResponseEntity unload(@PathVariable("circleId") Long circleId,@PathVariable("photoId") Long photoId,HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {
             photoService.deletePhoto(photoRepository.findById(photoId).get());
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+            throw  new AccessDeniedException("403 return");
+    }
+     */
+    /**
+     * 사진삭제
+     */
+    @DeleteMapping("/user/circle/{circleId}/delete/photos/{photoIds}")
+    public ResponseEntity unloads(@PathVariable("circleId") Long circleId,@PathVariable List<Long> photoIds,HttpServletRequest request2) throws IOException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {
+            for (Long photoId : photoIds) {
+                photoService.deletePhoto(photoRepository.findById(photoId).get());
+            }
             return new ResponseEntity(HttpStatus.OK);
         }
         else

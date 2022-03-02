@@ -14,8 +14,9 @@ public class Photo {
     @Id
     @GeneratedValue
     @Column(name="photo_id")
-    public Long id;
-
+    private Long id;
+    @Enumerated(EnumType.STRING)
+    private PhotoType photoType;
     private String uploadFileName;
     private String storeFileName;
 
@@ -26,8 +27,12 @@ public class Photo {
     public Photo(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
+        this.photoType=PhotoType.서브;
     }
     public void setCircle(Circle circle){
         this.circle=circle;
     }
-}
+    public void setMain(){
+        this.photoType=PhotoType.메인;
+    }
+    public void setSub(){this.photoType=PhotoType.서브;}}
