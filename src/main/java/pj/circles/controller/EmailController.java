@@ -44,6 +44,7 @@ public class EmailController {
     public EmailResponseDto emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
         if(emailRepository.findByEmail(email.getEmail()).isEmpty()){
             sendSimpleMessage(email.getEmail());
+            return new EmailResponseDto(email.getEmail());
         }
 
         if(emailRepository.findByEmail(email.getEmail()).get().getJoined()==true) {

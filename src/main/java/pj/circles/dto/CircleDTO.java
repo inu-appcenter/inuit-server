@@ -23,21 +23,35 @@ public class CircleDTO {
         private LocalDateTime recruitEndDate;
         private Long userId;
         private Long photoId;
+        private String introduce;
+        private String address;
+        private String information;
+        private String phone;
+        private String nickname;
+        private CircleCategory circleCategory;
+        private CircleDivision circleDivision;
+
         public CirclesDTO(Circle circle) {
             id = circle.getId();
             name = circle.getName();
             oneLineIntroduce = circle.getOneLineIntroduce();
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
-            userId=circle.getMember().getId();
+            userId = circle.getMember().getId();
+            introduce=circle.getIntroduce();
+            address=circle.getAddress();
+            information=circle.getInformation();
+            phone=circle.getPhoneNumber();
+            nickname=circle.getMember().getNickName();
+            circleCategory=circle.getCircleCategory();
+            circleDivision=circle.getCircleDivision();
             Optional<Photo> photo1 = circle.getPhotos().stream()
                     .filter(photo -> photo.getPhotoType().equals(PhotoType.메인))
                     .findFirst();
-            if(photo1.isEmpty()){
+            if (photo1.isEmpty()) {
 
-            }
-            else{
-                photoId=photo1.get().getId();
+            } else {
+                photoId = photo1.get().getId();
             }
 
         }
@@ -47,6 +61,7 @@ public class CircleDTO {
     public static class CircleOneDTO {
         private Long id;
         private String name;
+        private String nickname;
         private String introduce;
         private String information;
         private CircleCategory circleCategory;
@@ -56,12 +71,15 @@ public class CircleDTO {
         private LocalDateTime recruitEndDate;
         private String address;
         private String cafeLink;
+        private String link;
         private String openKakaoLink;
         private String phoneNumber;
         private List<PhotoListDto> photos;
+
         public CircleOneDTO(Circle circle) {
             id = circle.getId();
             name = circle.getName();
+            nickname = circle.getMember().getNickName();
             introduce = circle.getIntroduce();
             information = circle.getInformation();
             circleCategory = circle.getCircleCategory();
@@ -69,32 +87,38 @@ public class CircleDTO {
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
             recruitStartDate = circle.getRecruitStartDate();
-            address=circle.getAddress();
-            cafeLink=circle.getCafeLink();
-            openKakaoLink=circle.getOpenKakaoLink();
-            phoneNumber=circle.getPhoneNumber();
-            photos=circle.getPhotos().stream()
+            link=circle.getLink();
+            address = circle.getAddress();
+            cafeLink = circle.getCafeLink();
+            openKakaoLink = circle.getOpenKakaoLink();
+            phoneNumber = circle.getPhoneNumber();
+            photos = circle.getPhotos().stream()
                     .map(photo -> new PhotoListDto(photo)).collect(Collectors.toList());
         }
     }
+
     @Data
-    static class PhotoListDto{
+    static class PhotoListDto {
         private Long id;
         private PhotoType photoType;
-        public PhotoListDto(Photo photo){
-            id=photo.getId();
-            photoType=photo.getPhotoType();
+
+        public PhotoListDto(Photo photo) {
+            id = photo.getId();
+            photoType = photo.getPhotoType();
         }
     }
+
     @Data
-    public static class ReturnCircleIdResponse{
+    public static class ReturnCircleIdResponse {
         private Long id;
+
         public ReturnCircleIdResponse(Long id) {
             this.id = id;
         }
     }
+
     @Data
-    public static class UpdateCircleRequest{
+    public static class UpdateCircleRequest {
 
         private String oneLineIntroduce;//한줄소개*
         private String introduce;//소개*
@@ -109,6 +133,7 @@ public class CircleDTO {
         private String phoneNumber;//전화번호
 
     }
+
     @Data
     public static class CreateCircleRequest {
         private String name;//동아리이름
@@ -126,9 +151,10 @@ public class CircleDTO {
         private String phoneNumber;//전화번호
         private String information;//지원정보
     }
+
     @Data
     @AllArgsConstructor
-    public static class DeleteCircle{
+    public static class DeleteCircle {
         private Long id;
     }
 
