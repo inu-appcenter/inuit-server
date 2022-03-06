@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pj.circles.domain.*;
-import pj.circles.file.FileStore;
+
 import pj.circles.jwt.JwtTokenProvider;
 import pj.circles.repository.PhotoRepository;
 import pj.circles.service.CircleService;
@@ -160,9 +160,10 @@ public class CircleController {
                 start = LocalDateTime.parse(request.getRecruitStartDate().get());
                 end = LocalDateTime.parse(request.getRecruitEndDate().get());
             }
-            circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
-                    request.getCircleDivision(), request.getRecruit(),start,end,
-                    request.getLink(), request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
+            circleService.update(circleService.findById(id),request.getName(), request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
+                    request.getCircleDivision(), request.getCircleCategory(),request.getRecruit(),start,end,
+                    request.getLink(), request.getAddress(), request.getCafeLink(), request.getPhoneNumber(), request.getOpenKakaoLink());
+
             return new ReturnCircleIdResponse(id);
         }
         else
@@ -210,9 +211,9 @@ public class CircleController {
             start = LocalDateTime.parse(request.getRecruitStartDate().get());
             end = LocalDateTime.parse(request.getRecruitEndDate().get());
         }
-        circleService.findById(id).updateCircle(request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
-                request.getCircleDivision(), request.getRecruit(), start, end,
-                request.getLink(),request.getAddress(), request.getCafeLink(), request.getPhoneNumber());
+        circleService.update(circleService.findById(id),request.getName(), request.getOneLineIntroduce(), request.getIntroduce(), request.getInformation(),
+                request.getCircleDivision(), request.getCircleCategory(),request.getRecruit(),start,end,
+                request.getLink(), request.getAddress(), request.getCafeLink(), request.getPhoneNumber(), request.getOpenKakaoLink());
         return new ReturnCircleIdResponse(id);
 
     }

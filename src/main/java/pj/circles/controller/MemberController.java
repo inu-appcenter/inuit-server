@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import pj.circles.domain.Email;
 import pj.circles.domain.Member;
 
 import pj.circles.jwt.JwtTokenProvider;

@@ -20,7 +20,7 @@ public class Circle {
 
     private String name;//동아리이름*
     private String oneLineIntroduce;//한줄소개*
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String introduce;//소개*
     private String information;//지원정보
     @Enumerated(EnumType.STRING)
@@ -48,32 +48,34 @@ public class Circle {
     private Member member;
 
     public Circle(String name, String oneLineIntroduce, String introduce,
-                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit,String openKakaoLink,
-                  LocalDateTime recruitStartDate,LocalDateTime recruitEndDate,String link,String address,String cafeLink,String phoneNumber,String information,Member member) {
+                  CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakaoLink,
+                  LocalDateTime recruitStartDate, LocalDateTime recruitEndDate, String link, String address, String cafeLink, String phoneNumber, String information, Member member) {
         this.name = name;
         this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
         this.circleCategory = circleCategory;
         this.circleDivision = circleDivision;
         this.recruit = recruit;
-        this.openKakaoLink=openKakaoLink;
-        this.recruitStartDate=recruitStartDate;
-        this.recruitEndDate=recruitEndDate;
-        this.link=link;
-        this.address=address;
-        this.cafeLink=cafeLink;
-        this.phoneNumber=phoneNumber;
-        this.information=information;
-        this.member=member;
+        this.openKakaoLink = openKakaoLink;
+        this.recruitStartDate = recruitStartDate;
+        this.recruitEndDate = recruitEndDate;
+        this.link = link;
+        this.address = address;
+        this.cafeLink = cafeLink;
+        this.phoneNumber = phoneNumber;
+        this.information = information;
+        this.member = member;
     }
 
-    public void updateCircle(String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision,
-                             Boolean recruit, LocalDateTime recruitStartDate, LocalDateTime recruitEndDate,
-                             String link, String address, String cafeLink, String phoneNumber) {
+    public void updateCircle(String name,String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision
+            , CircleCategory circleCategory, Boolean recruit, LocalDateTime recruitStartDate, LocalDateTime recruitEndDate,
+                             String link, String address, String cafeLink, String phoneNumber, String openKakaoLink) {
+        this.name=name;
         this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
         this.information = information;
         this.circleDivision = circleDivision;
+        this.circleCategory = circleCategory;
         this.recruit = recruit;
         this.recruitStartDate = recruitStartDate;
         this.recruitEndDate = recruitEndDate;
@@ -81,6 +83,7 @@ public class Circle {
         this.address = address;
         this.cafeLink = cafeLink;
         this.phoneNumber = phoneNumber;
+        this.openKakaoLink = openKakaoLink;
 
     }
 }

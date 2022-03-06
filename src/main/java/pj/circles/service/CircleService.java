@@ -28,6 +28,13 @@ public class CircleService {
         circleRepository.save(circle);
         return circle.getId();
     }
+    @Transactional
+    public void update(Circle circle,String name,String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision
+            , CircleCategory circleCategory, Boolean recruit, LocalDateTime recruitStartDate, LocalDateTime recruitEndDate,
+                       String link, String address, String cafeLink, String phoneNumber, String openKakaoLink){
+        circle.updateCircle(name,oneLineIntroduce,introduce,information,circleDivision,circleCategory,recruit,recruitStartDate
+        ,recruitEndDate,link,address,cafeLink,phoneNumber,openKakaoLink);
+    }
 
     public Circle findById(Long circleId){
         return circleRepository.findById(circleId).get();

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import pj.circles.domain.*;
 
-import java.security.PublicKey;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,13 +37,13 @@ public class CircleDTO {
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
             userId = circle.getMember().getId();
-            introduce=circle.getIntroduce();
-            address=circle.getAddress();
-            information=circle.getInformation();
-            phone=circle.getPhoneNumber();
-            nickname=circle.getMember().getNickName();
-            circleCategory=circle.getCircleCategory();
-            circleDivision=circle.getCircleDivision();
+            introduce = circle.getIntroduce();
+            address = circle.getAddress();
+            information = circle.getInformation();
+            phone = circle.getPhoneNumber();
+            nickname = circle.getMember().getNickName();
+            circleCategory = circle.getCircleCategory();
+            circleDivision = circle.getCircleDivision();
             Optional<Photo> photo1 = circle.getPhotos().stream()
                     .filter(photo -> photo.getPhotoType().equals(PhotoType.메인))
                     .findFirst();
@@ -62,6 +61,7 @@ public class CircleDTO {
         private Long id;
         private String name;
         private String nickname;
+        private String oneLineIntroduce;
         private String introduce;
         private String information;
         private CircleCategory circleCategory;
@@ -81,13 +81,14 @@ public class CircleDTO {
             name = circle.getName();
             nickname = circle.getMember().getNickName();
             introduce = circle.getIntroduce();
+            oneLineIntroduce = circle.getOneLineIntroduce();
             information = circle.getInformation();
             circleCategory = circle.getCircleCategory();
             circleDivision = circle.getCircleDivision();
             recruit = circle.getRecruit();
             recruitEndDate = circle.getRecruitEndDate();
             recruitStartDate = circle.getRecruitStartDate();
-            link=circle.getLink();
+            link = circle.getLink();
             address = circle.getAddress();
             cafeLink = circle.getCafeLink();
             openKakaoLink = circle.getOpenKakaoLink();
@@ -120,10 +121,12 @@ public class CircleDTO {
     @Data
     public static class UpdateCircleRequest {
 
+        private String name;
         private String oneLineIntroduce;//한줄소개*
         private String introduce;//소개*
         private String information;//지원정보
         private CircleDivision circleDivision;//중앙동아리,가동아리,소모임*
+        private CircleCategory circleCategory;
         private Boolean recruit;//모집여부*
         private Optional<String> recruitStartDate;//시작기간
         private Optional<String> recruitEndDate;//마감기간
@@ -131,6 +134,7 @@ public class CircleDTO {
         private String address;//동호수
         private String cafeLink;//동아리카페링크
         private String phoneNumber;//전화번호
+        private String openKakaoLink;
 
     }
 

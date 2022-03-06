@@ -4,18 +4,12 @@ package pj.circles.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.MailException;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.Email;
 import pj.circles.repository.EmailRepository;
-
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import java.util.Random;
 
 
 @RequiredArgsConstructor
