@@ -21,9 +21,9 @@ public class InitDb {
 
     @PostConstruct
     public void init(){
-      initService.dbInit();
-      initService.dbInit2();
-      initService.dbInit3();
+      //initService.dbInit();
+      //initService.dbInit2();
+      //initService.dbInit3();
       initService.dbInit4();
     }
     @Component

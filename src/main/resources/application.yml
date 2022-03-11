@@ -10,7 +10,7 @@ spring: #띄어쓰기 없음
       ddl-auto: create #띄어쓰기 6칸
     properties: #띄어쓰기 4칸
       hibernate: #띄어쓰기 6칸
-        default_batch_fetch_size: 100
+        default_batch_fetch_size: 10
         #show_sql: true #띄어쓰기 8칸
 
         format_sql: true #띄어쓰기 8칸
