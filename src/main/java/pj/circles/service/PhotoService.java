@@ -44,7 +44,7 @@ public class PhotoService {
     }
     public String findPhoto(Long id){
         Photo photo = photoRepository.findById(id).get();
-        return fileDir+photo.getStoreFileName();
+        return fileDir+"/"+photo.getStoreFileName();
     }
     @Transactional
     public void setMain(Long id){
