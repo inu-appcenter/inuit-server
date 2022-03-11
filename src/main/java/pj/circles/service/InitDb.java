@@ -24,7 +24,7 @@ public class InitDb {
       //initService.dbInit();
       //initService.dbInit2();
       //initService.dbInit3();
-      initService.dbInit4();
+      //initService.dbInit4();
     }
     @Component
     @Transactional
