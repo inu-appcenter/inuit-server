@@ -69,10 +69,15 @@ public class MemberController {
         } else {
             if (emailRepository.findByEmail(request.getEmail()).get().isCheck() == true
             && emailRepository.findByEmail(request.getEmail()).get().isJoin()==false) {
-                emailRepository.findByEmail(request.getEmail()).get().isJoined();
-                return new ReturnMemberIdResponse(
-                        memberService.join(request.getNickName(), passwordEncoder.encode(request.getPassword()), request.getEmail()));
-            } else
+                if(memberRepository.findByNickName(request.getNickName()).isEmpty()) {
+                    emailRepository.findByEmail(request.getEmail()).get().isJoined();
+                    return new ReturnMemberIdResponse(
+                            memberService.join(request.getNickName(), passwordEncoder.encode(request.getPassword()), request.getEmail()));
+                }
+                else {
+                    throw new IllegalArgumentException("이미있는 닉네임입니다");
+                }
+                } else
 
                 throw new NoSuchElementException();
         }
@@ -108,9 +113,15 @@ public class MemberController {
     public ReturnMemberIdResponse updateMember(
             HttpServletRequest request2, @RequestBody @Valid UpdateMemberRequest request) {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        if(memberRepository.findByNickName(request.getNickName()).isEmpty()) {
+            memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()), request.getNickName());
+            return new ReturnMemberIdResponse(userPk);
+        }
+        else {
+            throw new IllegalArgumentException("이미있는 닉네임입니다");
+        }
 
-        memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()), request.getNickName());
-        return new ReturnMemberIdResponse(userPk);
+
     }
 
     /**
