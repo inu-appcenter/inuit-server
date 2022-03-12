@@ -33,7 +33,7 @@ public class PhotoService {
     }
     @Transactional
     public void deletePhoto(Photo photo){
-        File file = new File(fileDir+photo.getStoreFileName());
+        File file = new File(fileDir+"/"+photo.getStoreFileName());
 
         if(file.exists()){
 
