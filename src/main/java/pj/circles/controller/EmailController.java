@@ -105,7 +105,7 @@ public class EmailController {
         logger.info("인증 번호 : " + ePw);
         String code = createCode(ePw);
         message.addRecipients(MimeMessage.RecipientType.TO, to); //보내는 대상
-        message.setSubject("Slack 확인 코드: " + code,"UTF-8"); //제목
+        message.setSubject("INUIT 확인 코드: " + code,"UTF-8"); //제목
 
         if(emailRepository.findByEmail(to).isEmpty()) {
             emailService.save(to, code);
