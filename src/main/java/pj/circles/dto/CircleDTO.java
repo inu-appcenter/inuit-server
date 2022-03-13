@@ -19,6 +19,7 @@ public class CircleDTO {
         private String name;
         private String oneLineIntroduce;
         private Boolean recruit;
+        private LocalDateTime recruitStartDate;
         private LocalDateTime recruitEndDate;
         private Long userId;
         private Long photoId;
@@ -34,7 +35,12 @@ public class CircleDTO {
             id = circle.getId();
             name = circle.getName();
             oneLineIntroduce = circle.getOneLineIntroduce();
-            recruit = circle.getRecruit();
+            if(LocalDateTime.now().isBefore(circle.getRecruitEndDate())&&LocalDateTime.now().isAfter(circle.getRecruitStartDate())){
+                recruit = true;
+            }
+            else{
+                recruit = false;
+            }
             recruitEndDate = circle.getRecruitEndDate();
             userId = circle.getMember().getId();
             introduce = circle.getIntroduce();
@@ -85,7 +91,12 @@ public class CircleDTO {
             information = circle.getInformation();
             circleCategory = circle.getCircleCategory();
             circleDivision = circle.getCircleDivision();
-            recruit = circle.getRecruit();
+            if(LocalDateTime.now().isBefore(circle.getRecruitEndDate())&&LocalDateTime.now().isAfter(circle.getRecruitStartDate())){
+                recruit = true;
+            }
+            else{
+                recruit = false;
+            }
             recruitEndDate = circle.getRecruitEndDate();
             recruitStartDate = circle.getRecruitStartDate();
             link = circle.getLink();
