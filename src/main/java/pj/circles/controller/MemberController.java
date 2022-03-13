@@ -118,7 +118,13 @@ public class MemberController {
             return new ReturnMemberIdResponse(userPk);
         }
         else {
-            throw new IllegalArgumentException("이미있는 닉네임입니다");
+            if(memberService.findById(userPk).getNickName().equals(request.getNickName())) {
+                memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()), request.getNickName());
+                return new ReturnMemberIdResponse(userPk);
+            }
+            else {
+                throw new IllegalArgumentException("이미있는 닉네임입니다");
+            }
         }
 
 
