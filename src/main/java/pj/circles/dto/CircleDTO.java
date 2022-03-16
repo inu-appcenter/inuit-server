@@ -35,11 +35,12 @@ public class CircleDTO {
             id = circle.getId();
             name = circle.getName();
             oneLineIntroduce = circle.getOneLineIntroduce();
-            if(LocalDateTime.now().isBefore(circle.getRecruitEndDate())&&LocalDateTime.now().isAfter(circle.getRecruitStartDate())){
-                recruit = true;
-            }
-            else{
-                recruit = false;
+            if(!(circle.getRecruitEndDate()==null)&&!(circle.getRecruitStartDate()==null)) {
+                if (LocalDateTime.now().isBefore(circle.getRecruitEndDate()) && LocalDateTime.now().isAfter(circle.getRecruitStartDate())) {
+                    recruit = true;
+                } else {
+                    recruit = false;
+                }
             }
             recruitEndDate = circle.getRecruitEndDate();
             userId = circle.getMember().getId();
@@ -91,11 +92,12 @@ public class CircleDTO {
             information = circle.getInformation();
             circleCategory = circle.getCircleCategory();
             circleDivision = circle.getCircleDivision();
-            if(LocalDateTime.now().isBefore(circle.getRecruitEndDate())&&LocalDateTime.now().isAfter(circle.getRecruitStartDate())){
-                recruit = true;
-            }
-            else{
-                recruit = false;
+            if(!(circle.getRecruitEndDate()==null)&&!(circle.getRecruitStartDate()==null)) {
+                if (LocalDateTime.now().isBefore(circle.getRecruitEndDate()) && LocalDateTime.now().isAfter(circle.getRecruitStartDate())) {
+                    recruit = true;
+                } else {
+                    recruit = false;
+                }
             }
             recruitEndDate = circle.getRecruitEndDate();
             recruitStartDate = circle.getRecruitStartDate();
