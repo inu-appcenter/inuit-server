@@ -42,16 +42,23 @@ public class EmailController {
 
     @PostMapping("/email") // 이메일 인증 코드 보내기
     public EmailResponseDto emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
-        if(emailRepository.findByEmail(email.getEmail()).isEmpty()){
+        String[] mailSplit=email.getEmail().split("@");
+        if(mailSplit.length==1) {throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");}
+        if(mailSplit[1].equals("inu.ac.kr")) {
+            if (emailRepository.findByEmail(email.getEmail()).isEmpty()) {
+                sendSimpleMessage(email.getEmail());
+                return new EmailResponseDto(email.getEmail());
+            }
+
+            if (emailRepository.findByEmail(email.getEmail()).get().getJoined() == true) {
+                throw new IllegalArgumentException("이미 존제하는 이메일입니다.");
+            }
             sendSimpleMessage(email.getEmail());
             return new EmailResponseDto(email.getEmail());
         }
-
-        if(emailRepository.findByEmail(email.getEmail()).get().getJoined()==true) {
-            throw new IllegalArgumentException("이미 존제하는 이메일입니다.");
+        else {
+            throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");
         }
-        sendSimpleMessage(email.getEmail());
-        return new EmailResponseDto(email.getEmail());
     }
     @PostMapping("/email/password") // 이메일 인증 코드 보내기
     public EmailResponseDto findPassword(@RequestBody @Valid EmailRequest email) throws Exception {
