@@ -43,7 +43,7 @@ public class EmailController {
     @PostMapping("/email") // 이메일 인증 코드 보내기
     public EmailResponseDto emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
         String[] mailSplit=email.getEmail().split("@");
-        if(mailSplit.length==1) {throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");}
+        if(!(mailSplit.length==2)) {throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");}
         if(mailSplit[1].equals("inu.ac.kr")) {
             if (emailRepository.findByEmail(email.getEmail()).isEmpty()) {
                 sendSimpleMessage(email.getEmail());
