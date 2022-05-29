@@ -44,7 +44,7 @@ public class InitDb {
             Circle circle = new Circle("모집중-문화-가동아리","첫줄소개",
                     "소개", CircleCategory.문화, CircleDivision.가동아리,true,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
-            em.flush();
+
         }
         public void dbInit2() {
             Member member = new Member("닉2","비번2","이메일2");
@@ -53,7 +53,7 @@ public class InitDb {
             Circle circle = new Circle("모집안함-학술-중앙동아리","첫줄소개2",
                     "소개", CircleCategory.학술, CircleDivision.중앙동아리,false,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
-            em.flush();
+
         }
         public void dbInit3() {
             Member member = new Member("string",passwordEncoder.encode("string"),"string");
@@ -64,7 +64,7 @@ public class InitDb {
             Circle circle = new Circle("모집중-체육-소모임","첫줄소개3",
                     "소개", CircleCategory.체육, CircleDivision.소모임,true,"x", LocalDateTime.now(),null,null,null,null,null,null,member);
             em.persist(circle);
-            em.flush();
+
         }
         public void dbInit4() {
             Member member = new Member(id,passwordEncoder.encode(ps),"root");
@@ -72,7 +72,7 @@ public class InitDb {
 
             em.persist(member);
 
-            em.flush();
+
         }
         //사람추가
 
