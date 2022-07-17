@@ -4,3 +4,5 @@
 #https://play.google.com/store/apps/details?id=com.inu.appcenter.inuit   
 
 [INUIT .pptx](https://github.com/inu-appcenter/inuit-server/files/9066262/INUIT.pptx)
+
+*리뉴얼중 2022-07-01~*
