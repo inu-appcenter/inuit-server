@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.Email;
 import pj.circles.repository.EmailRepository;
 
+import java.util.Optional;
+
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +36,16 @@ public class EmailService {
         email1.setCode(code);
 
     }
-
+    public Optional<Email> findByEmailOp(String email){
+        return emailRepository.findByEmail(email);
+    }
+    public Email findByEmail(String email){
+        return emailRepository.findByEmail(email).orElseThrow(()->new NullPointerException("없는값입니다"));
+    }
+    @Transactional
+    public void deleteById(Long id){
+        emailRepository.deleteById(id);
+    }
     @Transactional
     public void isChecked(String email){
         emailRepository.findByEmail(email).get().isChecked();

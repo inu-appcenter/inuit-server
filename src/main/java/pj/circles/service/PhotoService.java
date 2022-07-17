@@ -42,6 +42,9 @@ public class PhotoService {
         }
 
     }
+    public Photo findById(Long id){
+        return photoRepository.findById(id).orElseThrow(()->new NullPointerException("없는값입니다"));
+    }
     public String findPhoto(Long id){
         Photo photo = photoRepository.findById(id).get();
         return fileDir+"/"+photo.getStoreFileName();

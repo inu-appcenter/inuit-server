@@ -12,13 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pj.circles.domain.*;
-
 import pj.circles.jwt.JwtTokenProvider;
-import pj.circles.repository.PhotoRepository;
 import pj.circles.service.CircleService;
 import pj.circles.service.MemberService;
 import pj.circles.service.PhotoService;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -26,7 +23,6 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +38,6 @@ public class CircleController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
     private final PhotoService photoService;
-    private final PhotoRepository photoRepository;
     /**
      * 전체조회
      */
@@ -179,7 +174,7 @@ public class CircleController {
             List<Photo> photos = memberService.findById(userPk).getCircle().getPhotos();
             List<Long> ids = photos.stream().map(o->o.getId()).collect(Collectors.toList());
             for(Long did:ids){
-                photoService.deletePhoto(photoRepository.findById(did).get());
+                photoService.deletePhoto(photoService.findById(did));
             }
             Long id = memberService.findById(userPk).getCircle().getId();
             circleService.deleteCircle(id);
@@ -303,12 +298,12 @@ public class CircleController {
     /**
      * 사진삭제
      */
-    @DeleteMapping("/user/circle/{circleId}/delete/photos/{photoIds}")
+    @DeleteMapping("/user/circle/{circleId}/delete/photos/{photoIds}")//차후 delete 삭제
     public ResponseEntity unloads(@PathVariable("circleId") Long circleId,@PathVariable List<Long> photoIds,HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {
             for (Long photoId : photoIds) {
-                photoService.deletePhoto(photoRepository.findById(photoId).get());
+                photoService.deletePhoto(photoService.findById(photoId));
             }
             return new ResponseEntity(HttpStatus.OK);
         }

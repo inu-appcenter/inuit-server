@@ -8,26 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pj.circles.domain.Member;
-
 import pj.circles.jwt.JwtTokenProvider;
-import pj.circles.repository.EmailRepository;
-import pj.circles.repository.MemberRepository;
+import pj.circles.service.EmailService;
 import pj.circles.service.MemberService;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static pj.circles.dto.MemberDTO.*;
 
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final EmailRepository emailRepository;
-    private final MemberRepository memberRepository;
+    private final EmailService emailService;
     private final JwtTokenProvider jwtTokenProvider;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,7 +45,7 @@ public class MemberController {
 
     ) {
 
-        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberService.findAll();
         List<MemberOneDTO> collect = members.stream()
                 .map(o -> new MemberOneDTO(o)).collect(Collectors.toList());
         return new Result(collect);
@@ -64,13 +58,13 @@ public class MemberController {
     public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request) {
 
 
-        if (emailRepository.findByEmail(request.getEmail()).isEmpty()) {
+        if (emailService.findByEmailOp(request.getEmail()).isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            if (emailRepository.findByEmail(request.getEmail()).get().isCheck() == true
-            && emailRepository.findByEmail(request.getEmail()).get().isJoin()==false) {
-                if(memberRepository.findByNickName(request.getNickName()).isEmpty()) {
-                    emailRepository.findByEmail(request.getEmail()).get().isJoined();
+            if (emailService.findByEmail(request.getEmail()).isCheck() == true
+            && emailService.findByEmail(request.getEmail()).isJoin()==false) {
+                if(memberService.findByNickName(request.getNickName()).isEmpty()) {
+                    emailService.findByEmail(request.getEmail()).isJoined();
                     return new ReturnMemberIdResponse(
                             memberService.join(request.getNickName(), passwordEncoder.encode(request.getPassword()), request.getEmail()));
                 }
@@ -102,7 +96,7 @@ public class MemberController {
             @PathVariable("id") Long id
     ) {
         String email = memberService.findById(id).getEmail();
-        emailRepository.deleteById(emailRepository.findByEmail(email).get().getId());
+        emailService.deleteById(emailService.findByEmail(email).getId());
         memberService.deleteMember(id);
         return new DeleteMember(id);
     }
@@ -113,7 +107,7 @@ public class MemberController {
     public ReturnMemberIdResponse updateMember(
             HttpServletRequest request2, @RequestBody @Valid UpdateMemberRequest request) {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
-        if(memberRepository.findByNickName(request.getNickName()).isEmpty()) {
+        if(memberService.findByNickName(request.getNickName()).isEmpty()) {
             memberService.updateMember(userPk,passwordEncoder.encode(request.getPassword()), request.getNickName());
             return new ReturnMemberIdResponse(userPk);
         }
@@ -139,7 +133,7 @@ public class MemberController {
     ) {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         String email = memberService.findById(userPk).getEmail();
-        emailRepository.deleteById(emailRepository.findByEmail(email).get().getId());
+        emailService.deleteById(emailService.findByEmail(email).getId());
         memberService.deleteMember(userPk);
         return new DeleteMember(userPk);
     }
@@ -148,17 +142,16 @@ public class MemberController {
      */
     @PostMapping("/login")
     public String login(@RequestBody LoginMemberRequest member) {
-        Member mem = memberRepository.findByEmail(member.getEmail())
+        Member mem = memberService.findByEmail(member.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        Member mem1 = memberRepository.findByEmail(member.getEmail()).get();
-        if (!passwordEncoder.matches(member.getPassword(), mem1.getPassword())) {
+        if (!passwordEncoder.matches(member.getPassword(), mem.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");}
-        Iterator<String> iter =mem1.getRoles().iterator();
+        Iterator<String> iter =mem.getRoles().iterator();
         List<String> roles=new ArrayList<>();
         while (iter.hasNext()) {
             roles.add(iter.next());
         }
-        return jwtTokenProvider.createToken(mem1.getUsername(), roles);
+        return jwtTokenProvider.createToken(mem.getUsername(), roles);
     }
 
     @Data

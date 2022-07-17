@@ -18,6 +18,7 @@ import pj.circles.jwt.JwtTokenProvider;
 import pj.circles.repository.EmailRepository;
 import pj.circles.repository.MemberRepository;
 import pj.circles.service.EmailService;
+import pj.circles.service.MemberService;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -32,9 +33,8 @@ import java.util.Random;
 public class EmailController {
 
     private final EmailService emailService;
-    private final EmailRepository emailRepository;
     private final JavaMailSender emailSender;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -45,12 +45,12 @@ public class EmailController {
         String[] mailSplit=email.getEmail().split("@");
         if(!(mailSplit.length==2)) {throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");}
         if(mailSplit[1].equals("inu.ac.kr")) {
-            if (emailRepository.findByEmail(email.getEmail()).isEmpty()) {
+            if (emailService.findByEmailOp(email.getEmail()).isEmpty()) {
                 sendSimpleMessage(email.getEmail());
                 return new EmailResponseDto(email.getEmail());
             }
 
-            if (emailRepository.findByEmail(email.getEmail()).get().getJoined() == true) {
+            if (emailService.findByEmail(email.getEmail()).getJoined() == true) {
                 throw new IllegalArgumentException("이미 존제하는 이메일입니다.");
             }
             sendSimpleMessage(email.getEmail());
@@ -63,7 +63,7 @@ public class EmailController {
     @PostMapping("/email/password") // 이메일 인증 코드 보내기
     public EmailResponseDto findPassword(@RequestBody @Valid EmailRequest email) throws Exception {
 
-        if(emailRepository.findByEmail(email.getEmail()).get().getJoined()==true) {
+        if(emailService.findByEmail(email.getEmail()).getJoined()==true) {
             sendSimpleMessage(email.getEmail());
         }
         else {
@@ -73,14 +73,15 @@ public class EmailController {
     }
     @PostMapping("/verifyCode/password/{email}") // 이메일 인증 코드 검증
     public String verifyCodePassword(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
-        if(emailRepository.findByEmail(email).get().getCode().equals(code.getCode())) {
-            Member mem1 = memberRepository.findByEmail(email).get();
-            Iterator<String> iter =mem1.getRoles().iterator();
+        if(emailService.findByEmail(email).getCode().equals(code.getCode())) {
+            Member mem = memberService.findByEmail(email)
+                    .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+            Iterator<String> iter =mem.getRoles().iterator();
             List<String> roles=new ArrayList<>();
             while (iter.hasNext()) {
                 roles.add(iter.next());
             }
-            return jwtTokenProvider.createToken(mem1.getUsername(), roles);
+            return jwtTokenProvider.createToken(mem.getUsername(), roles);
         }
         else{
             throw new IllegalArgumentException("잘못된 인증번호입니다.");
@@ -88,7 +89,7 @@ public class EmailController {
     }
     @PostMapping("/verifyCode/{email}") // 이메일 인증 코드 검증
     public EmailResponseDto verifyCode(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
-        if(emailRepository.findByEmail(email).get().getCode().equals(code.getCode())) {
+        if(emailService.findByEmail(email).getCode().equals(code.getCode())) {
             emailService.isChecked(email);
             return new EmailResponseDto(code.getCode());
         }
@@ -114,7 +115,7 @@ public class EmailController {
         message.addRecipients(MimeMessage.RecipientType.TO, to); //보내는 대상
         message.setSubject("INUIT 확인 코드: " + code,"UTF-8"); //제목
 
-        if(emailRepository.findByEmail(to).isEmpty()) {
+        if(emailService.findByEmailOp(to).isEmpty()) {
             emailService.save(to, code);
         }
         else{

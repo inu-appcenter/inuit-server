@@ -37,7 +37,7 @@ public class CircleService {
     }
 
     public Circle findById(Long circleId){
-        return circleRepository.findById(circleId).get();
+        return circleRepository.findById(circleId).orElseThrow(()->new NullPointerException("없는값입니다"));
     }
     public List<Circle> findAll(){
         return circleRepository.findAll();
