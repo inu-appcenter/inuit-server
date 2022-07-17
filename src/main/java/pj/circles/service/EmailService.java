@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class EmailService {
 
     private final JavaMailSender emailSender;
