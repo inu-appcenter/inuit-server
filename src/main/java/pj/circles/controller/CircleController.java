@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static pj.circles.dto.CircleDTO.*;
+import static pj.circles.dto.CircleDto.*;
 //utf8mb4
 @RestController
 @RequiredArgsConstructor
@@ -44,8 +44,8 @@ public class CircleController {
     @GetMapping("/circles")
     public Result circlesAll() {
         List<Circle> circles = circleService.findAll();
-        List<CirclesDTO> collect = circles.stream()
-                .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
+        List<CirclesDto> collect = circles.stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
 
@@ -57,7 +57,7 @@ public class CircleController {
             @PathVariable("id") Long id
     ) {
         Circle circle = circleService.findById(id);
-        CircleOneDTO circleOneDTO = new CircleOneDTO(circle);
+        CircleOneDto circleOneDTO = new CircleOneDto(circle);
         return new Result(circleOneDTO);
     }
     /**
@@ -68,8 +68,8 @@ public class CircleController {
             @PathVariable("category") CircleCategory category
     ) {
         List<Circle> circles = circleService.findByCircleCategory(category);
-        List<CirclesDTO> collect = circles.stream()
-                .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
+        List<CirclesDto> collect = circles.stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
 
@@ -81,8 +81,8 @@ public class CircleController {
             @PathVariable("division") CircleDivision division
     ) {
         List<Circle> circles = circleService.findByCircleDivision(division);
-        List<CirclesDTO> collect = circles.stream()
-                .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
+        List<CirclesDto> collect = circles.stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
     /**
@@ -94,8 +94,8 @@ public class CircleController {
             @PathVariable("division") CircleDivision division
     ) {
         List<Circle> circles = circleService.findByCircleCategoryAndCircleDivision(category,division);
-        List<CirclesDTO> collect = circles.stream()
-                .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
+        List<CirclesDto> collect = circles.stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
     /**
@@ -106,8 +106,8 @@ public class CircleController {
             @PathVariable("name") String name
     ) {
         List<Circle> circles = circleService.findByNameOrIntroduce(name,name,name);
-        List<CirclesDTO> collect = circles.stream()
-                .map(o -> new CirclesDTO(o)).collect(Collectors.toList());
+        List<CirclesDto> collect = circles.stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
 
@@ -214,22 +214,8 @@ public class CircleController {
     }
     /**
      * 사진등록
-
-    @PostMapping("/user/circle/{id}/photo")
-    public ResponseEntity upload(@PathVariable("id") Long id,@RequestPart MultipartFile file,HttpServletRequest request2) throws IOException {
-        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
-        if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
-            Long pid = photoService.join(file, circleService.findById(id));
-            return new ResponseEntity(pid,HttpStatus.OK);
-        }
-        else
-            throw  new AccessDeniedException("403 return");
-    }
      */
-    /**
-     * 사진등록
-     */
-    @PostMapping("/user/circle/{id}/photos")
+    @PostMapping("/circle/{id}/photos")
     public ResponseEntity upload2(@PathVariable("id") Long id,@RequestPart List<MultipartFile> files,HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         List<Long> list = new ArrayList<>();
@@ -246,8 +232,8 @@ public class CircleController {
     /**
      * 메인사진설정
      */
-    @PostMapping("/user/circle/{circleId}/photo/{photoId}")
-    public ResponseEntity mainload(@PathVariable("circleId") Long id,@PathVariable("photoId") Long photoId,HttpServletRequest request2) throws IOException {
+    @PostMapping("/circle/{circleId}/photo/{photoId}")
+    public ResponseEntity mainLoad(@PathVariable("circleId") Long id, @PathVariable("photoId") Long photoId, HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(id).getMember().equals(memberService.findById(userPk))) {
             Optional<Photo> photo1 = circleService.findById(id).getPhotos().stream()
@@ -267,7 +253,7 @@ public class CircleController {
     /**
      * 사진조회
      */
-    @GetMapping("/circles/view/photo/{id}")
+    @GetMapping("/circles/photo/{id}")
     public ResponseEntity<Resource> showImage(@PathVariable("id") Long id){
         String imageRoot = photoService.findPhoto(id);
         Resource resource = new FileSystemResource(imageRoot);
@@ -283,22 +269,8 @@ public class CircleController {
     }
     /**
      * 사진삭제
-
-    @DeleteMapping("/user/circle/{circleId}/delete/photo/{photoId}")
-    public ResponseEntity unload(@PathVariable("circleId") Long circleId,@PathVariable("photoId") Long photoId,HttpServletRequest request2) throws IOException {
-        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
-        if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {
-            photoService.deletePhoto(photoRepository.findById(photoId).get());
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        else
-            throw  new AccessDeniedException("403 return");
-    }
      */
-    /**
-     * 사진삭제
-     */
-    @DeleteMapping("/user/circle/{circleId}/delete/photos/{photoIds}")//차후 delete 삭제
+    @DeleteMapping("/circle/{circleId}/photos/{photoIds}")
     public ResponseEntity unloads(@PathVariable("circleId") Long circleId,@PathVariable List<Long> photoIds,HttpServletRequest request2) throws IOException {
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(circleService.findById(circleId).getMember().equals(memberService.findById(userPk))) {

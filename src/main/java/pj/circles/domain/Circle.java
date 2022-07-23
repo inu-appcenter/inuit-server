@@ -47,6 +47,9 @@ public class Circle {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "circle")
+    private List<MemberLikeCircle> memberLikeCircles = new ArrayList<>();
+
     public Circle(String name, String oneLineIntroduce, String introduce,
                   CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakaoLink,
                   LocalDateTime recruitStartDate, LocalDateTime recruitEndDate, String link, String address, String cafeLink, String phoneNumber, String information, Member member) {

@@ -11,10 +11,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-public class CircleDTO {
+public class CircleDto {
 
     @Data
-    public static class CirclesDTO {
+    public static class CirclesDto {
         private Long id;
         private String name;
         private String oneLineIntroduce;
@@ -31,7 +31,7 @@ public class CircleDTO {
         private CircleCategory circleCategory;
         private CircleDivision circleDivision;
 
-        public CirclesDTO(Circle circle) {
+        public CirclesDto(Circle circle) {
             id = circle.getId();
             name = circle.getName();
             oneLineIntroduce = circle.getOneLineIntroduce();
@@ -64,7 +64,7 @@ public class CircleDTO {
     }
 
     @Data
-    public static class CircleOneDTO {
+    public static class CircleOneDto {
         private Long id;
         private String name;
         private String nickname;
@@ -83,7 +83,7 @@ public class CircleDTO {
         private String phoneNumber;
         private List<PhotoListDto> photos;
 
-        public CircleOneDTO(Circle circle) {
+        public CircleOneDto(Circle circle) {
             id = circle.getId();
             name = circle.getName();
             nickname = circle.getMember().getNickName();

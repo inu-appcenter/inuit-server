@@ -7,15 +7,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pj.circles.domain.Circle;
 import pj.circles.domain.Member;
+import pj.circles.domain.MemberLikeCircle;
 import pj.circles.jwt.JwtTokenProvider;
+import pj.circles.service.CircleService;
 import pj.circles.service.EmailService;
+import pj.circles.service.MemberLikeCircleService;
 import pj.circles.service.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 import java.util.stream.Collectors;
-import static pj.circles.dto.MemberDTO.*;
+import static pj.circles.dto.MemberDto.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +28,8 @@ public class MemberController {
     private final MemberService memberService;
     private final EmailService emailService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CircleService circleService;
+    private final MemberLikeCircleService memberLikeCircleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     /**
@@ -30,11 +37,11 @@ public class MemberController {
      */
     @GetMapping("/member")
     public Result memberOne(
-            HttpServletRequest request2
+            HttpServletRequest request
     ) {
-        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request.getHeader("X-AUTH-TOKEN")));
         Member member = memberService.findById(userPk);
-        MemberOneDTO memberOneDTO = new MemberOneDTO(member);
+        MemberOneDto memberOneDTO = new MemberOneDto(member);
         return new Result(memberOneDTO);
     }
     /**
@@ -46,8 +53,8 @@ public class MemberController {
     ) {
 
         List<Member> members = memberService.findAll();
-        List<MemberOneDTO> collect = members.stream()
-                .map(o -> new MemberOneDTO(o)).collect(Collectors.toList());
+        List<MemberOneDto> collect = members.stream()
+                .map(o -> new MemberOneDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
 
@@ -129,9 +136,9 @@ public class MemberController {
      */
     @DeleteMapping("/member")
     public DeleteMember deleteMember(
-            HttpServletRequest request2
+            HttpServletRequest request
     ) {
-        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request.getHeader("X-AUTH-TOKEN")));
         String email = memberService.findById(userPk).getEmail();
         emailService.deleteById(emailService.findByEmail(email).getId());
         memberService.deleteMember(userPk);
@@ -154,6 +161,29 @@ public class MemberController {
         return jwtTokenProvider.createToken(mem.getUsername(), roles);
     }
 
+    /**
+     * 관심 동아리 등록
+     */
+    @PostMapping("/member/circle/{circleId}")
+    public ReturnMemberIdResponse saveLike(HttpServletRequest request,@PathVariable("circleId") Long circleId){
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request.getHeader("X-AUTH-TOKEN")));
+        Circle circle= circleService.findById(circleId);
+        Member member= memberService.findById(userPk);
+        memberLikeCircleService.join(member,circle);
+        return new ReturnMemberIdResponse(userPk);
+    }
+    /**
+     * 관심 동아리 삭제
+     */
+    @DeleteMapping("/memberLikeCircle/{memberLikeCircle}")
+    public ReturnMemberIdResponse deleteLike(HttpServletRequest request,@PathVariable("memberLikeCircle") Long memberLikeCircle) throws AccessDeniedException {
+        long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request.getHeader("X-AUTH-TOKEN")));
+
+        if(memberLikeCircleService.findById(memberLikeCircle).getMember().getId()==userPk) memberLikeCircleService.deleteById(memberLikeCircle);
+        else throw  new AccessDeniedException("403 return");
+
+        return new ReturnMemberIdResponse(userPk);
+    }
     @Data
     @AllArgsConstructor
     static class Result<T> {

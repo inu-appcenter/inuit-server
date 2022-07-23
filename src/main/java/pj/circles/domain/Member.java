@@ -11,9 +11,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements UserDetails {//관리자
+public class Member implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -23,10 +22,15 @@ public class Member implements UserDetails {//관리자
     private String nickName;
     private String password;
     private String email;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+
     @OneToOne(mappedBy = "member")
     private Circle circle;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberLikeCircle> memberLikeCircles = new ArrayList<>();
 
     public Member(String nickName, String passWord, String email){
         this.nickName=nickName;
