@@ -64,15 +64,7 @@ public class MemberController {
      * 맴버등록
      */
     @PostMapping("/register")
-    public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request, BindingResult result) {
-
-        if(result.hasErrors()){
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            FieldError fieldError = fieldErrors.get(0);
-            String field = fieldError.getField();
-            String defaultMessage = fieldError.getDefaultMessage();
-            throw new IllegalArgumentException(field+":"+defaultMessage);
-        }
+    public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request) {
 
         if (emailService.findByEmailOp(request.getEmail()).isEmpty()) {
             throw new NoSuchElementException();

@@ -1,7 +1,10 @@
 package pj.circles.exceptions;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,6 +14,15 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResult> notValid(MethodArgumentNotValidException e){
+        ErrorResult errorResult = new ErrorResult("400","잘못된요청입니다");
+        for (FieldError fieldError : e.getFieldErrors()){
+            errorResult.addValidation(fieldError.getField(),fieldError.getDefaultMessage());
+        }
+        return new ResponseEntity(errorResult, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorResult> noSuch(NoSuchElementException e){
         ErrorResult errorResult = new ErrorResult("NoSuch-Element",e.getMessage());

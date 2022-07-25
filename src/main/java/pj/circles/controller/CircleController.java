@@ -117,14 +117,8 @@ public class CircleController {
      * 등록
      */
     @PostMapping("/circle")
-    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2, BindingResult result){
-        if(result.hasErrors()){
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            FieldError fieldError = fieldErrors.get(0);
-            String field = fieldError.getField();
-            String defaultMessage = fieldError.getDefaultMessage();
-            throw new IllegalArgumentException(field+":"+defaultMessage);
-        }
+    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2){
+
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(memberService.findById(userPk).getCircle()==null) {
             LocalDateTime start = null;
