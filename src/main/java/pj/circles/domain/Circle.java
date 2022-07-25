@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,23 +19,36 @@ public class Circle {
     @Column(name = "circle_id")
     private Long id;
 
+    @NotBlank
     private String name;//동아리이름*
+
     private String oneLineIntroduce;//한줄소개*
+
     @Column(columnDefinition = "TEXT")
     private String introduce;//소개*
+
     private String information;//지원정보
+
     @Enumerated(EnumType.STRING)
     private CircleCategory circleCategory;//분류*
+
     @Enumerated(EnumType.STRING)
     private CircleDivision circleDivision;//중앙동아리,가동아리,소모임*
+
     private Boolean recruit;//모집여부*
+
     private LocalDateTime recruitStartDate;//시작기간
+
     private LocalDateTime recruitEndDate;//마감기간
+
     private String link;//지원링크
 
     private String address;//동호수
+
     private String cafeLink;//동아리카페링크
+
     private String openKakaoLink;//카카오 오픈쳇링크
+
     private String phoneNumber;//전화번호
 
     @OneToMany(mappedBy = "circle")

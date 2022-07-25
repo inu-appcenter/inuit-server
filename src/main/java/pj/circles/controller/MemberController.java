@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pj.circles.domain.Circle;
 import pj.circles.domain.Member;
@@ -62,8 +64,15 @@ public class MemberController {
      * 맴버등록
      */
     @PostMapping("/register")
-    public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request) {
+    public ReturnMemberIdResponse saveMember(@RequestBody @Valid CreateMemberRequest request, BindingResult result) {
 
+        if(result.hasErrors()){
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            FieldError fieldError = fieldErrors.get(0);
+            String field = fieldError.getField();
+            String defaultMessage = fieldError.getDefaultMessage();
+            throw new IllegalArgumentException(field+":"+defaultMessage);
+        }
 
         if (emailService.findByEmailOp(request.getEmail()).isEmpty()) {
             throw new NoSuchElementException();

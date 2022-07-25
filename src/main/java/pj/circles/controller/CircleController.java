@@ -9,6 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pj.circles.domain.*;
@@ -115,7 +117,14 @@ public class CircleController {
      * 등록
      */
     @PostMapping("/circle")
-    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2){
+    public ReturnCircleIdResponse saveCircle(@RequestBody @Valid CreateCircleRequest request, HttpServletRequest request2, BindingResult result){
+        if(result.hasErrors()){
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            FieldError fieldError = fieldErrors.get(0);
+            String field = fieldError.getField();
+            String defaultMessage = fieldError.getDefaultMessage();
+            throw new IllegalArgumentException(field+":"+defaultMessage);
+        }
         long userPk = Long.parseLong(jwtTokenProvider.getUserPk(request2.getHeader("X-AUTH-TOKEN")));
         if(memberService.findById(userPk).getCircle()==null) {
             LocalDateTime start = null;

@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,8 +20,11 @@ public class Member implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
+    @NotBlank
     private String nickName;
+    @NotBlank
     private String password;
+    @NotBlank
     private String email;
 
     @ElementCollection(fetch = FetchType.EAGER)
