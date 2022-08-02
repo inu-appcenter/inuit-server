@@ -15,8 +15,8 @@ import pj.circles.repository.MemberLikeCircleRepository;
 @Transactional(readOnly = true)
 public class MemberLikeCircleService {
 
-    @Autowired
-    MemberLikeCircleRepository memberLikeCircleRepository;
+
+    private final MemberLikeCircleRepository memberLikeCircleRepository;
 
     @Transactional
     public Long join(Member member,Circle circle){

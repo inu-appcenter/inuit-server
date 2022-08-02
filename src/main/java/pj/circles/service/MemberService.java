@@ -15,8 +15,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    MemberRepository memberRepository;
+
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Long join(String nickName, String passWord, String email){

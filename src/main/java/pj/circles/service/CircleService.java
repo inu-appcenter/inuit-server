@@ -15,8 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CircleService {
 
-    @Autowired
-    CircleRepository circleRepository;
+    private final CircleRepository circleRepository;
 
     @Transactional
     public Long join(String name, String oneLineIntroduce, String introduce,
