@@ -1,10 +1,15 @@
 package pj.circles.config;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -21,6 +26,9 @@ public class SwaggerConfiguration {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
+
+                .alternateTypeRules(AlternateTypeRules
+                        .newRule(Pageable.class, Page.class))
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.any())
@@ -54,5 +62,11 @@ public class SwaggerConfiguration {
                 .description("swagger config")
                 .version("1.0")
                 .build();
+    }
+    @Data
+    @ApiModel
+    static class Page{
+        @ApiModelProperty(value = "페이지번호")
+        private Integer page;
     }
 }

@@ -22,7 +22,6 @@ public class InitDb {
     @PostConstruct
     public void init(){
       //initService.dbInit();
-      //initService.dbInit2();
       //initService.dbInit3();
       //initService.dbInit4();
     }
@@ -38,23 +37,16 @@ public class InitDb {
         @Value("${ps}")
         private String ps;
         public void dbInit() {
-            Member member = new Member("닉1","비번1","이메일1");
-            //member.setId(999L);
-            em.persist(member);
-            Circle circle = new Circle("모집중-문화-가동아리","첫줄소개",
-                    "소개", CircleCategory.문화, CircleDivision.가동아리,true,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
-            em.persist(circle);
-
+            for (int num = 1; num < 31; num++){
+                Member member = new Member("닉"+num, "비번"+num, "이메일"+num);
+                //member.setId(999L);
+                em.persist(member);
+                Circle circle = new Circle("모집중-문화-가동아리"+num, "첫줄소개",
+                    "소개", CircleCategory.문화, CircleDivision.가동아리, true, "http~", LocalDateTime.now(), null, null, null, null, null, null, member);
+                em.persist(circle);
+            }
         }
-        public void dbInit2() {
-            Member member = new Member("닉2","비번2","이메일2");
 
-            em.persist(member);
-            Circle circle = new Circle("모집안함-학술-중앙동아리","첫줄소개2",
-                    "소개", CircleCategory.학술, CircleDivision.중앙동아리,false,"http~",LocalDateTime.now(),null,null,null,null,null,null,member);
-            em.persist(circle);
-
-        }
         public void dbInit3() {
             Member member = new Member("string",passwordEncoder.encode("string"),"string");
             Email email = new Email("string","1234");

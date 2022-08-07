@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +53,12 @@ public class CircleController {
                 .map(o -> new CirclesDto(o)).collect(Collectors.toList());
         return new Result(collect);
     }
-
+    @GetMapping("/circlePage")
+    public Result circlePaging(@PageableDefault(size = 5) Pageable pageable){
+        List<CirclesDto> collect = circleService.findAllPage(pageable).stream()
+                .map(o -> new CirclesDto(o)).collect(Collectors.toList());
+        return new Result(collect);
+    }
     /**
      * 단건조회
      */
