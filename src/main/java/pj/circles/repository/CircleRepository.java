@@ -7,7 +7,7 @@ import pj.circles.domain.CircleDivision;
 
 import java.util.List;
 
-public interface CircleRepository extends JpaRepository<Circle,Long> {
+public interface CircleRepository extends JpaRepository<Circle,Long>, CircleRepositoryCustom {
 
     List<Circle> findByCircleCategory(CircleCategory circleCategory);
     List<Circle> findByCircleDivision(CircleDivision circleDivision);

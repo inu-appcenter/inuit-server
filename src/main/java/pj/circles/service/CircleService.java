@@ -43,8 +43,8 @@ public class CircleService {
     public List<Circle> findAll(){
         return circleRepository.findAll();
     }
-    public Page<Circle> findAllPage(Pageable pageable){
-        return circleRepository.findAll(pageable);
+    public List<Circle> findAllPage(Pageable pageable){
+        return circleRepository.getList(pageable.getPageNumber());
     }
     public List<Circle> findByCircleCategory(CircleCategory circleCategory){
         return circleRepository.findByCircleCategory(circleCategory);
