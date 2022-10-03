@@ -2,8 +2,8 @@ package pj.circles.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pj.circles.domain.Circle;
-import pj.circles.domain.CircleCategory;
-import pj.circles.domain.CircleDivision;
+import pj.circles.domain.enumType.CircleCategory;
+import pj.circles.domain.enumType.CircleDivision;
 
 import java.util.List;
 

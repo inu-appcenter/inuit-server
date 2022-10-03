@@ -3,6 +3,8 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pj.circles.domain.enumType.CircleCategory;
+import pj.circles.domain.enumType.CircleDivision;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

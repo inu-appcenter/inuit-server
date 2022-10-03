@@ -1,12 +1,12 @@
 package pj.circles.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.*;
+import pj.circles.domain.enumType.CircleCategory;
+import pj.circles.domain.enumType.CircleDivision;
 import pj.circles.repository.CircleRepository;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class CircleService {
     @Transactional
     public Long join(String name, String oneLineIntroduce, String introduce,
                      CircleCategory circleCategory, CircleDivision circleDivision, Boolean recruit, String openKakao,
-                      LocalDateTime recruitStartDate, LocalDateTime recruitEndDate, String link, String address, String cafeLink, String phoneNumber,String information, Member member){
+                     LocalDateTime recruitStartDate, LocalDateTime recruitEndDate, String link, String address, String cafeLink, String phoneNumber, String information, Member member){
 
         Circle circle = new Circle(name,oneLineIntroduce,introduce,circleCategory,circleDivision,recruit,openKakao,
                 recruitStartDate,recruitEndDate,link,address,cafeLink,phoneNumber,information,member);
@@ -56,7 +56,7 @@ public class CircleService {
         return circleRepository.findByCircleDivision(circleDivision);
     }
     public List<Circle> findByCircleCategoryAndCircleDivision(
-            CircleCategory circleCategory,CircleDivision circleDivision){
+            CircleCategory circleCategory, CircleDivision circleDivision){
         return circleRepository.findByCircleCategoryAndCircleDivision(circleCategory,circleDivision);
     }
     @Transactional

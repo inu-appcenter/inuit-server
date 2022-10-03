@@ -7,6 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pj.circles.domain.*;
+import pj.circles.domain.enumType.CircleCategory;
+import pj.circles.domain.enumType.CircleDivision;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

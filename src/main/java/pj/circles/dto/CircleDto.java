@@ -4,6 +4,9 @@ package pj.circles.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import pj.circles.domain.*;
+import pj.circles.domain.enumType.CircleCategory;
+import pj.circles.domain.enumType.CircleDivision;
+import pj.circles.domain.enumType.PhotoType;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -3,6 +3,7 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pj.circles.domain.enumType.PhotoType;
 
 import javax.persistence.*;
 
@@ -26,7 +27,7 @@ public class Photo {
     public Photo(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
-        this.photoType=PhotoType.서브;
+        this.photoType= PhotoType.서브;
     }
     public void setCircle(Circle circle){
         this.circle=circle;
