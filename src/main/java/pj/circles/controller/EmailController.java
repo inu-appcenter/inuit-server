@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pj.circles.domain.Member;
 import pj.circles.dto.EmailRequest;
-import pj.circles.dto.EmailResponseDto;
+import pj.circles.dto.EmailResponse;
 import pj.circles.dto.VerifyRequest;
 import pj.circles.jwt.JwtTokenProvider;
-import pj.circles.repository.EmailRepository;
-import pj.circles.repository.MemberRepository;
 import pj.circles.service.EmailService;
 import pj.circles.service.MemberService;
 
@@ -41,27 +39,27 @@ public class EmailController {
 
 
     @PostMapping("/email") // 이메일 인증 코드 보내기
-    public EmailResponseDto emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
+    public EmailResponse emailAuth(@RequestBody @Valid EmailRequest email) throws Exception {
         String[] mailSplit=email.getEmail().split("@");
         if(!(mailSplit.length==2)) {throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");}
         if(mailSplit[1].equals("inu.ac.kr")) {
             if (emailService.findByEmailOp(email.getEmail()).isEmpty()) {
                 sendSimpleMessage(email.getEmail());
-                return new EmailResponseDto(email.getEmail());
+                return new EmailResponse(email.getEmail());
             }
 
             if (emailService.findByEmail(email.getEmail()).getJoined() == true) {
                 throw new IllegalArgumentException("이미 존제하는 이메일입니다.");
             }
             sendSimpleMessage(email.getEmail());
-            return new EmailResponseDto(email.getEmail());
+            return new EmailResponse(email.getEmail());
         }
         else {
             throw new IllegalArgumentException("형식에 맞지않는 이메일입니다.");
         }
     }
     @PostMapping("/email/password") // 이메일 인증 코드 보내기
-    public EmailResponseDto findPassword(@RequestBody @Valid EmailRequest email) throws Exception {
+    public EmailResponse findPassword(@RequestBody @Valid EmailRequest email) throws Exception {
 
         if(emailService.findByEmail(email.getEmail()).getJoined()==true) {
             sendSimpleMessage(email.getEmail());
@@ -69,7 +67,7 @@ public class EmailController {
         else {
             throw new IllegalArgumentException("가입하지않은 이메일입니다.");
         }
-        return new EmailResponseDto(email.getEmail());
+        return new EmailResponse(email.getEmail());
     }
     @PostMapping("/verifyCode/password/{email}") // 이메일 인증 코드 검증
     public String verifyCodePassword(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
@@ -88,10 +86,10 @@ public class EmailController {
         }
     }
     @PostMapping("/verifyCode/{email}") // 이메일 인증 코드 검증
-    public EmailResponseDto verifyCode(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
+    public EmailResponse verifyCode(@PathVariable("email")String email, @RequestBody VerifyRequest code) {
         if(emailService.findByEmail(email).getCode().equals(code.getCode())) {
             emailService.isChecked(email);
-            return new EmailResponseDto(code.getCode());
+            return new EmailResponse(code.getCode());
         }
         else{
             throw new IllegalArgumentException("잘못된 인증번호입니다.");

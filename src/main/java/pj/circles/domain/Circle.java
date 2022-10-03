@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pj.circles.domain.enumType.CircleCategory;
 import pj.circles.domain.enumType.CircleDivision;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -86,10 +85,10 @@ public class Circle {
         this.member = member;
     }
 
-    public void updateCircle(String name,String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision
+    public void updateCircle(String name, String oneLineIntroduce, String introduce, String information, CircleDivision circleDivision
             , CircleCategory circleCategory, Boolean recruit, LocalDateTime recruitStartDate, LocalDateTime recruitEndDate,
                              String link, String address, String cafeLink, String phoneNumber, String openKakaoLink) {
-        this.name=name;
+        this.name = name;
         this.oneLineIntroduce = oneLineIntroduce;
         this.introduce = introduce;
         this.information = information;

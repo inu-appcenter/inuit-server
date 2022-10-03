@@ -3,10 +3,10 @@ package pj.circles.dto;
 import lombok.Data;
 
 @Data
-public class EmailResponseDto {
+public class EmailResponse {
 
     private String response;
-    public EmailResponseDto(String email){
+    public EmailResponse(String email){
         this.response =email;
     }
 }

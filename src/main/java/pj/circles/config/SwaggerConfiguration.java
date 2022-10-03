@@ -17,7 +17,6 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,9 +36,11 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo()).securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()));
     }
+
     private ApiKey apiKey() {
         return new ApiKey("X-AUTH-TOKEN", "X-AUTH-TOKEN", "header");
     }
+
     private SecurityContext securityContext() {
         return springfox
                 .documentation
@@ -56,6 +57,7 @@ public class SwaggerConfiguration {
         authorizationScopes[0] = authorizationScope;
         return Arrays.asList(new SecurityReference("X-AUTH-TOKEN", authorizationScopes));
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Swagger")
@@ -63,9 +65,10 @@ public class SwaggerConfiguration {
                 .version("1.0")
                 .build();
     }
+
     @Data
     @ApiModel
-    static class Page{
+    static class Page {
         @ApiModelProperty(value = "페이지번호")
         private Integer page;
     }

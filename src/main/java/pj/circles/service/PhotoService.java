@@ -10,7 +10,6 @@ import pj.circles.domain.Circle;
 import pj.circles.domain.Photo;
 import pj.circles.file.FileStore;
 import pj.circles.repository.PhotoRepository;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -18,12 +17,14 @@ import java.io.IOException;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PhotoService {
-
     private final FileStore fileStore;
+
     @Value("${file.dir}")
     private String fileDir;
+
     @Autowired
     PhotoRepository photoRepository;
+
     @Transactional
     public Long join(MultipartFile multipartFile, Circle circle) throws IOException {
         Photo photo = fileStore.storeFile(multipartFile);
@@ -31,29 +32,29 @@ public class PhotoService {
         photoRepository.save(photo);
         return photo.getId();
     }
+
     @Transactional
-    public void deletePhoto(Photo photo){
-        File file = new File(fileDir+"/"+photo.getStoreFileName());
+    public void deletePhoto(Photo photo) {
+        File file = new File(fileDir + "/" + photo.getStoreFileName());
 
-        if(file.exists()){
-
+        if (file.exists()) {
             file.delete();
             photoRepository.delete(photo);
         }
+    }
 
+    public Photo findById(Long id) {
+        return photoRepository.findById(id).orElseThrow(() -> new NullPointerException("없는값입니다"));
     }
-    public Photo findById(Long id){
-        return photoRepository.findById(id).orElseThrow(()->new NullPointerException("없는값입니다"));
-    }
-    public String findPhoto(Long id){
+
+    public String findPhoto(Long id) {
         Photo photo = photoRepository.findById(id).get();
-        return fileDir+"/"+photo.getStoreFileName();
+        return fileDir + "/" + photo.getStoreFileName();
     }
+
     @Transactional
-    public void setMain(Long id){
+    public void setMain(Long id) {
         Photo photo = photoRepository.findById(id).get();
         photo.setMain();
     }
-
-
 }

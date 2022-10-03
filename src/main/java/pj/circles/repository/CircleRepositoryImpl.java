@@ -4,14 +4,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import pj.circles.domain.Circle;
 import pj.circles.domain.QCircle;
-
 import java.util.List;
 
 @RequiredArgsConstructor
 public class CircleRepositoryImpl implements CircleRepositoryCustom{
-
     private final JPAQueryFactory jpaQueryFactory;
-
 
     @Override
     public List<Circle> getList(int page) {

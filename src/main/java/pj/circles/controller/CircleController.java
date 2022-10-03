@@ -43,6 +43,7 @@ public class CircleController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
     private final PhotoService photoService;
+
     /**
      * 전체조회
      */

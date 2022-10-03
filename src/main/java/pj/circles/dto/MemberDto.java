@@ -1,12 +1,10 @@
 package pj.circles.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import pj.circles.domain.Circle;
 import pj.circles.domain.Member;
 import pj.circles.domain.MemberLikeCircle;
-
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Optional;

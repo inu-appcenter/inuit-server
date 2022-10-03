@@ -11,6 +11,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ErrorResult {
     private final String code;
+
     private final String message;
 
     private Map<String,String> validation=new HashMap<>();
@@ -18,6 +19,4 @@ public class ErrorResult {
     public void addValidation(String fieldName,String errorMessage){
         this.validation.put(fieldName,errorMessage);
     }
-
-
 }
