@@ -1,8 +1,8 @@
 package pj.circles.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import pj.circles.domain.enumType.CircleCategory;
 import pj.circles.domain.enumType.CircleDivision;
 import javax.persistence.*;
@@ -13,12 +13,12 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Circle {
-    @Id
-    @GeneratedValue
-    @Column(name = "circle_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class Circle extends BaseEntity{
 
     @NotBlank
     private String name;//동아리이름*
@@ -53,6 +53,7 @@ public class Circle {
     private String phoneNumber;//전화번호
 
     @OneToMany(mappedBy = "circle")
+    @ToString.Exclude
     private List<Photo> photos = new ArrayList<>();
     //동아리로고
     //동아리모집포스터
@@ -60,9 +61,11 @@ public class Circle {
     //수정기능
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @ToString.Exclude
     private Member member;
 
     @OneToMany(mappedBy = "circle")
+    @ToString.Exclude
     private List<MemberLikeCircle> memberLikeCircles = new ArrayList<>();
 
     public Circle(String name, String oneLineIntroduce, String introduce,

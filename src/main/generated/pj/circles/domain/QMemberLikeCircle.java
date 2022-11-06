@@ -22,9 +22,24 @@ public class QMemberLikeCircle extends EntityPathBase<MemberLikeCircle> {
 
     public static final QMemberLikeCircle memberLikeCircle = new QMemberLikeCircle("memberLikeCircle");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final QCircle circle;
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
+
+    //inherited
+    public final NumberPath<Long> createdBy = _super.createdBy;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
+    public final NumberPath<Long> lastModifiedBy = _super.lastModifiedBy;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final QMember member;
 

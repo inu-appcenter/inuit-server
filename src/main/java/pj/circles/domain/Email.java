@@ -3,6 +3,9 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,11 +14,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Email {
-    @Id
-    @GeneratedValue
-    @Column(name = "email_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class Email extends BaseEntity{
 
     private String email;
 

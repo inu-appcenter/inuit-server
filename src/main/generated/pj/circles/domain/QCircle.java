@@ -8,8 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import pj.circles.domain.enumType.CircleCategory;
-import pj.circles.domain.enumType.CircleDivision;
 
 
 /**
@@ -24,19 +22,34 @@ public class QCircle extends EntityPathBase<Circle> {
 
     public static final QCircle circle = new QCircle("circle");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final StringPath address = createString("address");
 
     public final StringPath cafeLink = createString("cafeLink");
 
-    public final EnumPath<CircleCategory> circleCategory = createEnum("circleCategory", CircleCategory.class);
+    public final EnumPath<pj.circles.domain.enumType.CircleCategory> circleCategory = createEnum("circleCategory", pj.circles.domain.enumType.CircleCategory.class);
 
-    public final EnumPath<CircleDivision> circleDivision = createEnum("circleDivision", CircleDivision.class);
+    public final EnumPath<pj.circles.domain.enumType.CircleDivision> circleDivision = createEnum("circleDivision", pj.circles.domain.enumType.CircleDivision.class);
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
+
+    //inherited
+    public final NumberPath<Long> createdBy = _super.createdBy;
+
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
     public final StringPath information = createString("information");
 
     public final StringPath introduce = createString("introduce");
+
+    //inherited
+    public final NumberPath<Long> lastModifiedBy = _super.lastModifiedBy;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final StringPath link = createString("link");
 

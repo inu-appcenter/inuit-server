@@ -3,6 +3,8 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import pj.circles.domain.enumType.PhotoType;
 
 import javax.persistence.*;
@@ -10,11 +12,10 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
-public class Photo {
-    @Id
-    @GeneratedValue
-    @Column(name = "photo_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class Photo extends BaseEntity{
+
     @Enumerated(EnumType.STRING)
     private PhotoType photoType;
     private String uploadFileName;

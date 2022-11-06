@@ -19,15 +19,34 @@ public class QEmail extends EntityPathBase<Email> {
 
     public static final QEmail email1 = new QEmail("email1");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
+    public final SimplePath<Object> checked = createSimple("checked", Object.class);
+
     public final StringPath code = createString("code");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
+
+    //inherited
+    public final NumberPath<Long> createdBy = _super.createdBy;
 
     public final StringPath email = createString("email");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final NumberPath<Long> id = _super.id;
 
     public final BooleanPath isCheck = createBoolean("isCheck");
 
     public final BooleanPath isJoin = createBoolean("isJoin");
+
+    public final BooleanPath joined = createBoolean("joined");
+
+    //inherited
+    public final NumberPath<Long> lastModifiedBy = _super.lastModifiedBy;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public QEmail(String variable) {
         super(Email.class, forVariable(variable));

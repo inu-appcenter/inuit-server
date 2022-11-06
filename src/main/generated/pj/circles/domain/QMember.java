@@ -22,11 +22,20 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final QCircle circle;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
     public final StringPath email = createString("email");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final ListPath<MemberLikeCircle, QMemberLikeCircle> memberLikeCircles = this.<MemberLikeCircle, QMemberLikeCircle>createList("memberLikeCircles", MemberLikeCircle.class, QMemberLikeCircle.class, PathInits.DIRECT2);
 
