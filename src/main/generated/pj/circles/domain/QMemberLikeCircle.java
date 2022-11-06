@@ -30,13 +30,7 @@ public class QMemberLikeCircle extends EntityPathBase<MemberLikeCircle> {
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
     //inherited
-    public final NumberPath<Long> createdBy = _super.createdBy;
-
-    //inherited
     public final NumberPath<Long> id = _super.id;
-
-    //inherited
-    public final NumberPath<Long> lastModifiedBy = _super.lastModifiedBy;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
