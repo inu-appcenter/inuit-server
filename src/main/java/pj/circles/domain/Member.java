@@ -1,10 +1,11 @@
 package pj.circles.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.*;
@@ -13,12 +14,9 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements UserDetails {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "member_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class Member extends BaseEntity implements UserDetails {
 
     @NotBlank
     private String nickName;

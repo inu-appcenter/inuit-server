@@ -3,17 +3,17 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberLikeCircle {
-    @Id
-    @GeneratedValue
-    @Column(name = "memberLikeCircle_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class MemberLikeCircle extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

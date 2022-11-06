@@ -1,8 +1,6 @@
 package pj.circles.service;
 
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pj.circles.domain.Circle;
@@ -14,26 +12,23 @@ import pj.circles.repository.MemberLikeCircleRepository;
 @Service
 @Transactional(readOnly = true)
 public class MemberLikeCircleService {
-
-
     private final MemberLikeCircleRepository memberLikeCircleRepository;
 
     @Transactional
-    public Long join(Member member,Circle circle){
-        MemberLikeCircle memberLikeCircle = new MemberLikeCircle(member,circle);
+    public Long join(Member member, Circle circle) {
+        MemberLikeCircle memberLikeCircle = new MemberLikeCircle(member, circle);
         memberLikeCircleRepository.save(memberLikeCircle);
         return memberLikeCircle.getId();
     }
 
     @Transactional
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         memberLikeCircleRepository.deleteById(id);
     }
 
-    public MemberLikeCircle findById(Long id){
-        return memberLikeCircleRepository.findById(id).orElseThrow(()->new NullPointerException("없는 좋아요입니다"));
+    public MemberLikeCircle findById(Long id) {
+        return memberLikeCircleRepository.findById(id).orElseThrow(() -> new NullPointerException("없는 좋아요입니다"));
     }
-
 
 
 }

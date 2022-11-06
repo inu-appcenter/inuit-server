@@ -3,7 +3,8 @@ package pj.circles.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Email {
-    @Id
-    @GeneratedValue
-    @Column(name="email_id")
-    private Long id;
+@SuperBuilder(toBuilder = true)
+@Slf4j
+public class Email extends BaseEntity{
 
     private String email;
 
@@ -27,19 +26,25 @@ public class Email {
 
     private boolean isJoin;//가입여부
 
-    public Email(String email,String code){
-        this.email=email;
-        this.code=code;
-        this.isCheck=false;
+    public Email(String email, String code) {
+        this.email = email;
+        this.code = code;
+        this.isCheck = false;
     }
-    public void isChecked(){
-        this.isCheck=true;
+
+    public void isChecked() {
+        this.isCheck = true;
     }
-    public void isJoined(){
-        this.isJoin=true;
+
+    public void isJoined() {
+        this.isJoin = true;
     }
-    public boolean getJoined(){return this.isJoin;}
-    public void setCode(String code){
-        this.code=code;
+
+    public boolean getJoined() {
+        return this.isJoin;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

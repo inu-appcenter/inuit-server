@@ -30,6 +30,7 @@ public class EmailService {
         emailRepository.save(email1);
         return email1.getId();
     }
+
     @Transactional
     public void setCode(String email,String code){
 
@@ -37,16 +38,20 @@ public class EmailService {
         email1.setCode(code);
 
     }
+
     public Optional<Email> findByEmailOp(String email){
         return emailRepository.findByEmail(email);
     }
+
     public Email findByEmail(String email){
         return emailRepository.findByEmail(email).orElseThrow(()->new NullPointerException("없는값입니다"));
     }
+
     @Transactional
     public void deleteById(Long id){
         emailRepository.deleteById(id);
     }
+
     @Transactional
     public void isChecked(String email){
         emailRepository.findByEmail(email).get().isChecked();

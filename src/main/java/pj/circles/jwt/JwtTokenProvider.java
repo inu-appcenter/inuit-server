@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
@@ -24,7 +25,6 @@ import java.util.List;
 public class JwtTokenProvider {
     @Value("${jwt.secretkey}")
     private String secretKey;
-
 
     // 토큰 유효시간 1440분
     private long tokenValidTime = 1440 * 60 * 1000L;

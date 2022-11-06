@@ -34,6 +34,14 @@ dependencies {
 	implementation ("org.springframework.boot:spring-boot-starter-mail")
 	implementation ("org.springframework.boot:spring-boot-starter-security")
 	implementation ("io.jsonwebtoken:jjwt:0.2")
+
+	implementation("com.querydsl:querydsl-core")
+	implementation("com.querydsl:querydsl-jpa")
+
+	annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+
 	implementation ("io.springfox:springfox-boot-starter:3.0.0")
 	compileOnly ("org.projectlombok:lombok")
 	runtimeOnly ("com.h2database:h2")

@@ -10,7 +10,6 @@ import pj.circles.repository.MemberRepository;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailService implements UserDetailsService {
-
     private final MemberRepository memberRepository;
 
     @Override
