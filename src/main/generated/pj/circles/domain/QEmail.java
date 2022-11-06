@@ -28,9 +28,6 @@ public class QEmail extends EntityPathBase<Email> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
-    //inherited
-    public final NumberPath<Long> createdBy = _super.createdBy;
-
     public final StringPath email = createString("email");
 
     //inherited
@@ -41,9 +38,6 @@ public class QEmail extends EntityPathBase<Email> {
     public final BooleanPath isJoin = createBoolean("isJoin");
 
     public final BooleanPath joined = createBoolean("joined");
-
-    //inherited
-    public final NumberPath<Long> lastModifiedBy = _super.lastModifiedBy;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
